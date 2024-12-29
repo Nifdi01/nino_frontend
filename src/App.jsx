@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import { Routes, Route } from 'react-router-dom'
 import OverviewPage from './pages/OverviewPage'
-import ProductsPage from './pages/ProductsPage'
+import SourcesPage from './pages/SourcesPage'
 import Sidebar from './components/common/Sidebar'
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
       <Sidebar />
       <Routes>
         <Route path='/' element={<OverviewPage />} />
-        <Route path='/products' element={<ProductsPage />} />
+        <Route path='/sources' element={<SourcesPage />} />
       </Routes>
     </div>
   )

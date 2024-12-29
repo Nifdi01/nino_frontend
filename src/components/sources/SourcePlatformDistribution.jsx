@@ -5,15 +5,15 @@ import { memo } from 'react';
 const COLORS = ["#6366F1", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
 const SCRAPE_SOURCE_DATA = [
-	{ name: "Oxu az", value: 45600 },
-	{ name: "Apa az", value: 38200 },
-	{ name: "Baku WS", value: 29800 },
-	{ name: "Musavat TV", value: 18700 },
-	{ name: "Tech az", value: 13700 },
-
+	{ name: "Telegram", value: 38200 },
+	{ name: "Websites", value: 45600 },
+	{ name: "Facebook", value: 18700 },
+	{ name: "Instagram", value: 29800 },
+	{ name: "X", value: 18700 },
+	{ name: "YouTube", value: 13700 },
 ];
 
-const ScrapingBySourceChart = memo(() => {
+const SourcePlatformDistribution = memo(() => {
 	return (
 		<motion.div
 			className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6 border border-gray-700'
@@ -21,7 +21,7 @@ const ScrapingBySourceChart = memo(() => {
 			animate={{ opacity: 1, y: 0 }}
 			transition={{ delay: 0.4 }}
 		>
-			<h2 className='text-lg font-medium mb-4 text-gray-100'>Most Scraped Sources</h2>
+			<h2 className='text-lg font-medium mb-4 text-gray-100'>Most Scraped Platforms</h2>
 
 			<div className='h-80'>
 				<ResponsiveContainer>
@@ -49,4 +49,4 @@ const ScrapingBySourceChart = memo(() => {
 	);
 });
 
-export default ScrapingBySourceChart;
+export default SourcePlatformDistribution;
