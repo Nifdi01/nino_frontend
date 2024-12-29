@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Rss, Search, Globe,  Newspaper } from "lucide-react";
 import ScrapeOverviewChart from "../components/overview/ScrapeOverviewChart";
 import KeywordDistribution from "../components/overview/KeywordDistributionChart";
+import ScrapingBySourceChart from "../components/overview/ScrapingBySourceChart";
 
 const OverviewPage = () => {
     return (
@@ -27,6 +28,7 @@ const OverviewPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <ScrapeOverviewChart />
                     <KeywordDistribution />
+                    <ScrapingBySourceChart />
                 </div>
             </main>
         </div>
