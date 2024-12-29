@@ -1,4 +1,4 @@
-import { BarChart2, ShoppingBag, DollarSign, ShoppingCart, TrendingUp, Settings, Users, Menu} from 'lucide-react'
+import { BarChart2, Newspaper, Rss, WholeWord, Settings, Users, Menu, TrendingUp} from 'lucide-react'
 import React from 'react'
 import { useState } from "react";
 import { motion } from 'framer-motion';
@@ -7,11 +7,11 @@ import { AnimatePresence } from 'framer-motion';
 
 const SIDEBAR_ITEMS = [
 	{ name: "Overview", icon: BarChart2, color: "#6366f1", href: "/" },
-	{ name: "Products", icon: ShoppingBag, color: "#8B5CF6", href: "/products" },
-	{ name: "Users", icon: Users, color: "#EC4899", href: "/users" },
-	{ name: "Sales", icon: DollarSign, color: "#10B981", href: "/sales" },
-	{ name: "Orders", icon: ShoppingCart, color: "#F59E0B", href: "/orders" },
+	{ name: "News", icon: Newspaper, color: "#8B5CF6", href: "/news" },
+	{ name: "Sources", icon: Rss, color: "#10B981", href: "/sources" },
+	{ name: "Keywords", icon: WholeWord, color: "#F59E0B", href: "/keywords" },
 	{ name: "Analytics", icon: TrendingUp, color: "#3B82F6", href: "/analytics" },
+	{ name: "Users", icon: Users, color: "#EC4899", href: "/users" },
 	{ name: "Settings", icon: Settings, color: "#6EE7B7", href: "/settings" },
 ];
 
@@ -46,7 +46,7 @@ const Sidebar = () => {
                     initial={{ opacity: 0, width: 0 }}
                     animate={{ opacity: 1, width: "auto" }}
                     exit={{ opacity: 0, width: 0 }}
-                    transition={{ duration: 0.1, delay: 0.3 }}
+                    transition={{ duration: 0.2, delay: 0.3 }}
                     >
                       {item.name}
                     </motion.span>
