@@ -4,7 +4,7 @@ import viteLogo from '/vite.svg'
 import { Routes, Route } from 'react-router-dom'
 import OverviewPage from './pages/OverviewPage'
 import ProductsPage from './pages/ProductsPage'
-import Sidebar from './components/Sidebar'
+import Sidebar from './components/common/Sidebar'
 
 function App() {
   return (
