@@ -1,0 +1,124 @@
+/* General wrapper background and text color */
+.rdrCalendarWrapper,
+.rdrDateRangeWrapper {
+  background-color: #1F2937; /* Dark gray background */
+  color: #E2E8F0; /* Light gray text color */
+}
+
+/* Date Display */
+.rdrDateDisplayWrapper {
+  background-color: #1F2937; /* Slightly darker background */
+  color: #CBD5E0; /* Lighter text */
+}
+
+.rdrDateDisplayItem input {
+  background-color: #4A5568; /* Input background */
+  color: #E2E8F0; /* Input text */
+  border: 1px solid #718096; /* Border color */
+}
+
+/* Month and Year Picker */
+.rdrMonthAndYearWrapper {
+  color: #E2E8F0;
+}
+
+.rdrMonthPicker select,
+.rdrYearPicker select {
+  background-color: none;
+  color: #E2E8F0;
+  border: none;
+}
+
+.rdrMonthPicker select option,
+.rdrYearPicker select option {
+  background-color: #2D3748;
+  color: #E2E8F0;
+}
+
+.rdrMonthPicker select option:hover,
+.rdrYearPicker select option:hover {
+  background-color: #374151;
+  color: #E2E8F0;
+}
+
+/* Next and Previous Buttons */
+.rdrNextPrevButton {
+  background-color: #4A5568;
+  color: #E2E8F0;
+  border-radius: 4px;
+  border: none;
+}
+
+.rdrNextPrevButton:hover {
+  background-color: #718096; /* Highlight on hover */
+}
+
+/* Week Days */
+.rdrWeekDay {
+  color: #A0AEC0;
+}
+
+.rdrDay.rdrDayWeekend.rdrDayStartOfWeek.rdrDayStartOfMonth {
+    background-color: #1F2937 !important;
+}
+
+.rdrDay.rdrDayStartOfMonth{
+    background-color: #1F2937 !important;
+}
+
+.rdrNextPrevButton.rdrNextButton {
+    background-color: #1F2937; /* Blue background */
+}
+
+.rdrNextPrevButton.rdrPprevButton {
+    background-color: #1F2937; /* Blue background */
+}
+
+.rdrNextPrevButton.rdrNextButton:hover {
+    background-color: #283445; /* Blue background */
+}
+
+.rdrNextPrevButton.rdrPprevButton:hover {
+    background-color: #283445; /* Blue background */
+}
+
+.rdrDayNumber span {
+    color: #FFF/* Your desired color here */;
+    background-color: none;
+  }
+/* Day Buttons */
+.rdrDay {
+  color: #D1D5DB; /* Neutral light gray for all text */
+  background-color: #1F2937; /* Dark background for buttons */
+  border: none; /* Remove any default borders if present */
+}
+
+.rdrDay:hover {
+  background-color: none; /* Slightly lighter background on hover */
+  color: #FFFFFF; /* Make text white on hover for better contrast */
+}
+
+.rdrDayPassive {
+  color: #6b7280c4 !important; /* Dimmer color for non-current month days */
+}
+
+.rdrDay.rdrCurrentMonth { 
+  color: #FFFFFF !important; /* Or your desired color */ 
+  font-weight: 400 !important;
+}
+
+/* Selected Day */
+.rdrDay.rdrDayStartOfMonth,
+.rdrDay.rdrInRange {
+  background-color: #3182CE; /* Blue highlight (adjust if needed) */
+  color: #FFF;
+}
+
+.rdrDay.rdrDayPassive {
+  color: #718096; /* Muted text for disabled days */
+}
+
+/* Inputs Placeholder */
+.rdrDateInput input::placeholder {
+  color: #A0AEC0;
+}

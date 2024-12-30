@@ -23,12 +23,12 @@ const SourcesPage = () => {
 					<StatCard name='Top Platform' icon={Search} value='Website' color='#EF4444' />
                 </motion.div>
 
-                {/* CHARTS */}
-                {/* <div className="grid grid-cols-1 mb-8">
-                    <ScrapeOverviewChart />
-                </div> */}
                 {/* Table of Sources */}
                 <NewsList />
+                {/* CHARTS */}
+                <div className="grid grid-cols-1 mt-8">
+                    <ScrapeOverviewChart />
+                </div>
             </main>
         </div>
     )

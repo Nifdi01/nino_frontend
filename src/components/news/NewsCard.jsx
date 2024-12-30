@@ -1,35 +1,44 @@
+// NewsCard.js
 import React from 'react';
 
 const NewsCard = ({ product, style }) => {
   return (
-    <div style={style} className="px-2">
+    <div style={style} className="px-2 pb-4"> {/* Padding for spacing */}
       <a
         href={product.link}
         className="block p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-200"
+        aria-label={`Read more about ${product.title}`}
+        target="_blank" // Opens the link in a new tab
+        rel="noopener noreferrer" // Security best practice
       >
         {/* Title */}
         <h5 className="mb-1 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {product.title}
         </h5>
 
-        <div className='flex'></div>
         {/* Source */}
         <div className="mb-2">
           <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-            {product.source}
+            Source: {product.source}
           </span>
         </div>
 
         {/* Keywords */}
         <div className="flex flex-wrap gap-1">
-          {product.keywords.map((keyword, index) => (
+          {product.keywords && product.keywords.length > 0 ? (
+            product.keywords.map((keyword, index) => (
               <span
                 key={index}
                 className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
               >
                 {keyword}
               </span>
-            ))}
+            ))
+          ) : (
+            <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
+              No keywords
+            </span>
+          )}
         </div>
       </a>
     </div>
