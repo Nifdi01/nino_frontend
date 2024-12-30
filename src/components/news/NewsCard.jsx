@@ -1,7 +1,7 @@
 // NewsCard.js
 import React from 'react';
 
-const NewsCard = ({ product, style }) => {
+const NewsCard = ({ product, style}) => {
   return (
     <div style={style} className="px-2 pb-4"> {/* Padding for spacing */}
       <a
@@ -18,27 +18,26 @@ const NewsCard = ({ product, style }) => {
 
         {/* Source */}
         <div className="mb-2">
-          <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-            Source: {product.source}
+          <span className="inline-block bg-blue-100 text-blue-800 font-semibold text-xs px-2 py-1 rounded-full">
+            {product.platform}
           </span>
-        </div>
-
-        {/* Keywords */}
-        <div className="flex flex-wrap gap-1">
-          {product.keywords && product.keywords.length > 0 ? (
-            product.keywords.map((keyword, index) => (
+          <span className="inline-block bg-blue-100 text-blue-500 font-semibold text-xs px-2 py-1 ml-2 rounded-full">
+            {product.source}
+          </span>
+          {product.keywords.map((keyword, index) => (
               <span
                 key={index}
-                className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
+                className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 ml-2 rounded-full"
               >
                 {keyword}
               </span>
             ))
-          ) : (
-            <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
-              No keywords
-            </span>
-          )}
+          }
+        </div>
+
+        {/* Keywords */}
+        <div className="flex flex-wrap gap-1">
+          
         </div>
       </a>
     </div>

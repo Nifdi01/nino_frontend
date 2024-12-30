@@ -33,7 +33,7 @@ export const PRODUCT_DATA = [
     // ... other predefined products
     ...Array.from({ length: 1000 }, (_, i) => ({
       id: i + 7,
-      title: `Source ${i + 7}`,
+      title: `Title ${i + 7}`,
       source: `Source ${i + 7}`,
       platform: `Platform ${i % 5}`,
       link: `https://source${i + 7}.com`,
