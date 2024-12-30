@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { FixedSizeList as List } from "react-window";
 import { Edit, Search, Trash2 } from "lucide-react";
+import Row from "../helpers/Row";
+import AddSourceModal from "../modals/AddSourceModal";
 
 const PRODUCT_DATA = [
 	{ id: 1, name: "Oxu az", platform: "Website", link: "https://oxu.az" },
@@ -18,9 +20,15 @@ const PRODUCT_DATA = [
 	})),
 ];
 
-const SourceTable = () => {
+
+const SourceTable = memo(() => {
 	const [searchTerm, setSearchTerm] = useState("");
 	const [filteredProducts, setFilteredProducts] = useState(PRODUCT_DATA);
+
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const openModal = () => setIsModalOpen(true);
+	const closeModal = () => setIsModalOpen(false);
 
 	const handleSearch = (e) => {
 		const term = e.target.value.toLowerCase();
@@ -33,42 +41,31 @@ const SourceTable = () => {
 		setFilteredProducts(filtered);
 	};
 
-	// Row renderer for react-window
-	const Row = ({ index, style }) => {
-		const product = filteredProducts[index];
-		return (
-			<div
-				style={style}
-				className='grid grid-cols-4 items-center px-4 py-2 border-b border-gray-700'
-			>
-				<div className='text-gray-100 truncate'>{product.name.toLowerCase()}</div>
-				<div className='text-gray-300 truncate'>{product.platform.toLowerCase()}</div>
-				<div className='text-gray-300 truncate'>{product.link}</div>
-				<div className='flex space-x-2'>
-					<button className='text-indigo-400 hover:text-indigo-300'>
-						<Edit size={18} />
-					</button>
-					<button className='text-red-400 hover:text-red-300'>
-						<Trash2 size={18} />
-					</button>
-				</div>
-			</div>
-		);
-	};
 
 	return (
 		<div className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6'>
 			<div className='flex justify-between items-center mb-4'>
 				<h2 className='text-xl font-semibold text-gray-100'>Sources</h2>
-				<div className='relative'>
-					<input
-						type='text'
-						placeholder='Search sources...'
-						className='bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
-						onChange={handleSearch}
-						value={searchTerm}
-					/>
-					<Search className='absolute left-3 top-2.5 text-gray-400' size={18} />
+				<div className="flex">
+					<button type="button" 
+					className="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+					onClick={openModal}>
+					Add Source
+					</button>
+
+					{/* Add Source Modal */}
+					{isModalOpen && <AddSourceModal onClose={closeModal} />}
+
+					<div className='relative'>
+						<input
+							type='text'
+							placeholder='Search sources...'
+							className='bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+							onChange={handleSearch}
+							value={searchTerm}
+						/>
+						<Search className='absolute left-3 top-2.5 text-gray-400' size={18} />
+					</div>
 				</div>
 			</div>
 
@@ -81,18 +78,20 @@ const SourceTable = () => {
 			</div>
 
 			{/* Virtualized List */}
-			<div className='overflow-auto' style={{ height: "400px" }}>
+			<div className='overflow-x-auto' style={{ height: "400px", width: "100%" }}>
 				<List
 					height={400} // Container height
 					itemCount={filteredProducts.length} // Total number of rows
 					itemSize={50} // Row height
 					width="100%" // Width of the list
 				>
-					{Row}
+					{({index, style}) => (
+						<Row index={index} style={style} filteredProducts={filteredProducts} />
+					)}
 				</List>
 			</div>
 		</div>
 	);
-};
+});
 
 export default SourceTable;
