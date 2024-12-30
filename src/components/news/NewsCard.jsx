@@ -1,0 +1,39 @@
+import React from 'react';
+
+const NewsCard = ({ product, style }) => {
+  return (
+    <div style={style} className="px-2">
+      <a
+        href={product.link}
+        className="block p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-200"
+      >
+        {/* Title */}
+        <h5 className="mb-1 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+          {product.title}
+        </h5>
+
+        <div className='flex'></div>
+        {/* Source */}
+        <div className="mb-2">
+          <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+            {product.source}
+          </span>
+        </div>
+
+        {/* Keywords */}
+        <div className="flex flex-wrap gap-1">
+          {product.keywords.map((keyword, index) => (
+              <span
+                key={index}
+                className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
+              >
+                {keyword}
+              </span>
+            ))}
+        </div>
+      </a>
+    </div>
+  );
+};
+
+export default React.memo(NewsCard);

@@ -1,10 +1,8 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import { Routes, Route } from 'react-router-dom'
 import OverviewPage from './pages/OverviewPage'
 import SourcesPage from './pages/SourcesPage'
 import KeywordsPage from './pages/KeywordsPage'
+import NewsPage from './pages/NewsPage'
 import Sidebar from './components/common/Sidebar'
 
 function App() {
@@ -22,6 +20,7 @@ function App() {
         <Route path='/' element={<OverviewPage />} />
         <Route path='/sources' element={<SourcesPage />} />
         <Route path='/keywords' element={<KeywordsPage />} />
+        <Route path='/news' element={<NewsPage />} />
       </Routes>
     </div>
   )

@@ -4,7 +4,8 @@ import { motion } from "framer-motion";
 import { TrendingUp,  TrendingDown, WholeWord, Key } from "lucide-react";
 import KeywordsTable from "../components/keywords/KeywordsTable";
 import KeywordDistributionChart from "../components/overview/KeywordDistributionChart";
-const SourcesPage = () => {
+
+const KeywordsPage = () => {
     return (
         <div className='flex-1 overflow-auto relative z-10'>
             <Header title="Keywords" />
@@ -16,7 +17,7 @@ const SourcesPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 >
-					<StatCard name='Keywords' icon={WholeWord} value='432' color='#8B5CF6' />
+					<StatCard name='Keywords' icon={WholeWord} value='32' color='#8B5CF6' />
                     <StatCard name='Least Active' icon={TrendingDown} value='Grozny' color='#6366F1' />
 					<StatCard name='Most Active' icon={TrendingUp} value='AZAL' color='#EF4444' />
                 </motion.div>
@@ -34,4 +35,4 @@ const SourcesPage = () => {
     )
 };
 
-export default SourcesPage;
+export default KeywordsPage;

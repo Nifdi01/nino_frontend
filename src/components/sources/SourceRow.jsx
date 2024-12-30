@@ -1,22 +1,24 @@
 import { Edit, Trash2 } from 'lucide-react';
+import React from 'react';
 
 
-const KeywordRow = ({ index, style , filteredProducts}) => {
-    const product = filteredProducts[index];
+const SourceRow = ({ product, style }) => {
     return (
         <div
             style={style}
-            className='grid grid-cols-3 items-center px-4 py-2 border-b border-gray-700'
+            className='grid grid-cols-5 items-center pl-4 py-2 border-b border-gray-700'
         >
             <div className='text-gray-100'>{product.name}</div>
+            <div className='text-gray-100'>{product.platform}</div>
+            <div className='text-gray-100'>{product.link}</div>
             <div className='text-gray-300'>{product.active ? 
             (<span type="button" 
-                class="text-red-700 border border-red-700 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500">
+                className="text-red-700 border border-red-700 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500">
                 Inactive
             </span>
             ) : (
             <span type="button" 
-                class="text-green-700 border border-green-700 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500">
+                className="text-green-700 border border-green-700 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-green-500 dark:text-green-500">
                 Active
             </span>
             )
@@ -33,4 +35,4 @@ const KeywordRow = ({ index, style , filteredProducts}) => {
     );
 };
 
-export default KeywordRow;
+export default React.memo(SourceRow);

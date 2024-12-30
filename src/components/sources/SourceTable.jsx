@@ -1,7 +1,7 @@
-import React, { useState, memo } from "react";
+import React, { useState, useMemo } from "react";
 import { FixedSizeList as List } from "react-window";
 import { Edit, Search, Trash2 } from "lucide-react";
-import SourceRow from "../helpers/SourceRow";
+import SourceRow from "./SourceRow";
 import AddSourceModal from "../modals/AddSourceModal";
 
 const PRODUCT_DATA = [
@@ -22,25 +22,29 @@ const PRODUCT_DATA = [
 ];
 
 
-const SourceTable = memo(() => {
+const SourceTable = () => {
 	const [searchTerm, setSearchTerm] = useState("");
-	const [filteredProducts, setFilteredProducts] = useState(PRODUCT_DATA);
 
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => setIsModalOpen(true);
 	const closeModal = () => setIsModalOpen(false);
 
-	const handleSearch = (e) => {
-		const term = e.target.value.toLowerCase();
-		setSearchTerm(term);
-		const filtered = PRODUCT_DATA.filter(
-			(product) =>
-				product.name.toLowerCase().includes(term) ||
-				product.platform.toLowerCase().includes(term)
-		);
-		setFilteredProducts(filtered);
-	};
+	const filteredProducts = useMemo(() => {
+            const term = searchTerm.toLowerCase();
+            return PRODUCT_DATA.filter(product =>
+              product.name.toLowerCase().includes(term)
+            );
+        }, [searchTerm]);
+        
+    const handleSearch = (e) => {
+        setSearchTerm(e.target.value);
+    };
+    
+    const Row = ({ index, style, data }) => {
+        const product = data[index];
+        return <SourceRow product={product} style={style} />;
+    };
 
 
 	return (
@@ -90,15 +94,14 @@ const SourceTable = memo(() => {
                         itemCount={filteredProducts.length} // Total number of rows
                         itemSize={50} // Row height
                         width="100%" // Width of the list
+                        itemData={filteredProducts} // Pass filteredProducts as itemData
                     >
-                        {({ index, style }) => (
-                            <SourceRow index={index} style={style} filteredProducts={filteredProducts} />
-                        )}
+                        {Row}
                     </List>
                 </div>
             </div>
 		</div>
 	);
-});
+};
 
 export default SourceTable;
