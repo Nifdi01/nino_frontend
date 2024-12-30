@@ -1,36 +1,33 @@
 import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import { motion } from "framer-motion";
-import { Rss, Search, TrendingUp,  TrendingDown } from "lucide-react";
-import ScrapingBySourceChart from "../components/overview/ScrapingBySourceChart";
-import SourceTable from "../components/sources/SourceTable";
-import SourcePlatformDistribution from "../components/sources/SourcePlatformDistribution";
-
+import { TrendingUp,  TrendingDown, WholeWord, Key } from "lucide-react";
+import KeywordsTable from "../components/keywords/KeywordsTable";
+import KeywordDistributionChart from "../components/overview/KeywordDistributionChart";
 const SourcesPage = () => {
     return (
         <div className='flex-1 overflow-auto relative z-10'>
-            <Header title="Sources" />
+            <Header title="Keywords" />
             <main className="max-w-7xl mx-auto py-6 px-4 lg:px-8">
                 {/* STATS */}
                 <motion.div
-                className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8"
+                className="grid grid-cols-1 gap-5 sm:grid-cols-3 lg:grid-cols-3 mb-8"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 >
-					<StatCard name='Sources' icon={Rss} value='432' color='#8B5CF6' />
-                    <StatCard name='Least Active' icon={TrendingDown} value='Az news' color='#6366F1' />
-					<StatCard name='Most Active' icon={TrendingUp} value='Oxu az' color='#EF4444' />
-					<StatCard name='Top Platform' icon={Search} value='Website' color='#EF4444' />
+					<StatCard name='Keywords' icon={WholeWord} value='432' color='#8B5CF6' />
+                    <StatCard name='Least Active' icon={TrendingDown} value='Grozny' color='#6366F1' />
+					<StatCard name='Most Active' icon={TrendingUp} value='AZAL' color='#EF4444' />
                 </motion.div>
 
                 {/* Table of Sources */}
-                <SourceTable />
+                <KeywordsTable />
 
                 {/* CHARTS */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-4">
-                    <ScrapingBySourceChart />
-                    <SourcePlatformDistribution />
+                <div className="grid grid-cols-1 mt-4">
+                    <KeywordDistributionChart />
+                    {/* <SourcePlatformDistribution /> */}
                 </div>
             </main>
         </div>

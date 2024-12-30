@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { ChevronDown } from "lucide-react";
 
 const AddSourceModal = ({ onClose }) => {
 
@@ -29,15 +30,20 @@ const AddSourceModal = ({ onClose }) => {
                     <label className="block mb-2 text-sm font-medium text-gray-100">
                         Platform
                     </label>
-                    <select
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 bg-gray-800 text-gray-100"
-                    >
-                        <option value="website">Website</option>
-                        <option value="telegram">Telegram</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="instagram">Instagram</option>
-                        <option value="twitter">Twitter</option>
-                    </select>
+                    <div className="relative">
+                        <select
+                            className="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 bg-gray-800 text-gray-100 appearance-none"
+                            >
+                            <option value="website">Website</option>
+                            <option value="telegram">Telegram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="twitter">Twitter</option>
+                        </select>
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center mb-3 pr-4">
+                            <ChevronDown className="text-gray-100" />
+                        </div>
+                    </div>
                     <label className="block mb-2 text-sm font-medium text-gray-100">
                         Link
                     </label>
