@@ -27,7 +27,7 @@ const ScrapeOverviewChart = memo(() => {
     animate={{ opacity: 1, y: 0 }}
     transition={{ delay: 0.2 }}
     >
-        <h1 className="text-lg font-medium mb-4 text-gray-100">Scraping Overview</h1>
+        <h1 className="text-lg font-medium mb-4 text-gray-100">Monthly Scraped Content</h1>
         
         <div className="h-80">
             <ResponsiveContainer width={"100%"} height={"100%"}>

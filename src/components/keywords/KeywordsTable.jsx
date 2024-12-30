@@ -9,7 +9,6 @@ const PRODUCT_DATA = [
     { id: 2, name: "Russia", active: true },
     { id: 3, name: "Grozny", active: false },
     { id: 4, name: "Airplanes", active: false },
-    { id: 5, name: "Russia", active: true },
     { id: 6, name: "Azerbaijan", active: true },
 	// Add more rows to test virtual scrolling
 	...Array.from({ length: 100 }, (_, i) => ({

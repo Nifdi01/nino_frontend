@@ -25,7 +25,7 @@ const SourcesPage = () => {
                 <KeywordsTable />
 
                 {/* CHARTS */}
-                <div className="grid grid-cols-1 mt-4">
+                <div className="grid grid-cols-1 mt-8">
                     <KeywordDistributionChart />
                     {/* <SourcePlatformDistribution /> */}
                 </div>
