@@ -1,13 +1,13 @@
 /* General wrapper background and text color */
 .rdrCalendarWrapper,
 .rdrDateRangeWrapper {
-  background-color: #1F2937; /* Dark gray background */
+  background-color: #374151; /* Dark gray background */
   color: #E2E8F0; /* Light gray text color */
 }
 
 /* Date Display */
 .rdrDateDisplayWrapper {
-  background-color: #1F2937; /* Slightly darker background */
+  background-color: #374151; /* Slightly darker background */
   color: #CBD5E0; /* Lighter text */
 }
 
@@ -59,19 +59,19 @@
 }
 
 .rdrDay.rdrDayWeekend.rdrDayStartOfWeek.rdrDayStartOfMonth {
-    background-color: #1F2937 !important;
+    background-color: #374151 !important;
 }
 
 .rdrDay.rdrDayStartOfMonth{
-    background-color: #1F2937 !important;
+    background-color: #374151 !important;
 }
 
 .rdrNextPrevButton.rdrNextButton {
-    background-color: #1F2937; /* Blue background */
+    background-color: #374151; /* Blue background */
 }
 
 .rdrNextPrevButton.rdrPprevButton {
-    background-color: #1F2937; /* Blue background */
+    background-color: #374151; /* Blue background */
 }
 
 .rdrNextPrevButton.rdrNextButton:hover {
@@ -89,7 +89,7 @@
 /* Day Buttons */
 .rdrDay {
   color: #D1D5DB; /* Neutral light gray for all text */
-  background-color: #1F2937; /* Dark background for buttons */
+  background-color: #374151; /* Dark background for buttons */
   border: none; /* Remove any default borders if present */
 }
 
