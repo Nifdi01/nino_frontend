@@ -1,6 +1,6 @@
 // LoginPage.js (Final Version)
 import React, { useState } from 'react';
-import { registerUser } from '../components/services/auth'; // Login function from auth.js
+import { registerUser } from '../services/auth'; // Login function from auth.js
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {

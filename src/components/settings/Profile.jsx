@@ -11,9 +11,9 @@ const Profile = () => {
 		<SettingSection icon={User} title={"Profile"}>
 			<div className='flex flex-col sm:flex-row items-center mb-6'>
 				<img
-					src='https://i.redd.it/if-the-rizzler-hits-the-rizz-face-at-full-gear-will-it-v0-903yhr4qdp2e1.jpg?width=640&format=pjpg&auto=webp&s=440518bd9986bc6fa3673574522fda8cc69c6be5'
+					src='src\assets\images\avatar.svg'
 					alt='Profile'
-					className='rounded-full w-20 h-20 object-cover mr-4'
+					className='rounded-full w-20 h-20 object-cover mr-4 bg-gray-300'
 				/>
 
 				<div>

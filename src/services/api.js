@@ -11,8 +11,8 @@ const api = axios.create({
 
 // List of endpoints that do not require Authorization header
 const authFreeEndpoints = [
-  "/users/login/",
-  "/users/register/",
+  "/login/",
+  "/register/",
   "/token/refresh/",
 ];
 

@@ -5,7 +5,7 @@ import KeywordsPage from './pages/KeywordsPage';
 import NewsPage from './pages/NewsPage';
 import Sidebar from './components/common/Sidebar';
 import LoginPage from './pages/LoginPage'; // Assuming you have a login page
-import ProtectedRoute from './components/services/ProtectedRoute'; // Create this component as described earlier
+import ProtectedRoute from './services/ProtectedRoute'; // Create this component as described earlier
 import RegisterPage from './pages/RegisterPage';
 import SettingsPage from './pages/SettingsPage';
 

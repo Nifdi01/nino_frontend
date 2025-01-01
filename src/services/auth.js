@@ -3,7 +3,7 @@ import api from "./api";
 export const registerUser = async (credentials) => {
   console.log(credentials);
   try {
-    const response = await api.post('/users/register/', credentials); // API call to login endpoint
+    const response = await api.post('/register/', credentials); // API call to login endpoint
 
 
     return response.data; // Return the response data if successful
@@ -27,10 +27,9 @@ export const registerUser = async (credentials) => {
 
 
 
-
 export const loginUser = async (credentials) => {
   try {
-    const response = await api.post('/users/login/', credentials); // API call to login endpoint
+    const response = await api.post('/login/', credentials); // API call to login endpoint
 
     // Save tokens and user information to localStorage
     localStorage.setItem('accessToken', response.data.access);
@@ -55,7 +54,6 @@ export const loginUser = async (credentials) => {
       // Extract field-specific errors and format them
       errorMessage = Object.entries(errorData)
         .map(([field, messages]) => `${messages.join(', ')}`)
-        .join(' | ');
     }
 
     throw new Error(errorMessage); // Throw the formatted error

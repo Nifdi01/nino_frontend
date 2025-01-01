@@ -42,7 +42,7 @@ const Sidebar = memo(() => {
                     >
                       <Link to={'/'}>
                         <img 
-                          src="src/assets/images/logo-nino.png" 
+                          src="src/assets/images/logo-nino.svg" 
                           alt="Nino Logo" 
                           className='ml-2 mb-2 w-16' 
                         />
