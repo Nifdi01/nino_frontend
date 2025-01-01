@@ -1,29 +1,31 @@
-// LoginPage.js (Final Version)
 import React, { useState } from 'react';
-import { loginUser } from '../components/services/auth'; // Login function from auth.js
+import { loginUser } from '../components/services/auth'; // Import the login function
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [email, setEmail] = useState(''); 
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null); // Error state
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setError(null); // Reset previous errors
+    setError(null); // Reset any previous errors
+
     try {
-      await loginUser({ email, password, company });
-      navigate('/'); // Redirect to the overview page after login
+      await loginUser({ email, password, company }); // Login request
+      navigate('/'); // Redirect after successful login
     } catch (err) {
-      // Handle different error structures
+      // Handle error responses
       if (err.detail) {
-        setError(err.detail);
+        setError(err.detail); // Detailed error from the server
       } else if (typeof err === 'string') {
-        setError(err);
+        setError(err); // String error
+      } else if (err.message) {
+        setError(err.message); // JavaScript Error object message
       } else {
-        setError('Login failed. Please try again.');
+        setError('An unexpected error occurred. Please try again.');
       }
     }
   };
@@ -57,7 +59,6 @@ const LoginPage = () => {
               required
             />
           </div>
-          {/* Remove 'company' field if not needed */}
           <div className='mb-4'>
             <label htmlFor='company' className='block mb-2'>Company</label>
             <input
@@ -74,7 +75,7 @@ const LoginPage = () => {
           </button>
           <div className='my-4'>
             <a href="/register" className="inline-flex items-center justify-center text-blue-600 dark:text-blue-500 hover:underline">
-            Click here to register
+              Click here to register
             </a>
           </div>
         </form>

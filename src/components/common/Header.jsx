@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { logoutUser } from '../services/auth';
 
 const Header = ({ title }) => {
-  const email = localStorage.getItem('userEmail');
+  const fullName = localStorage.getItem('userFullName');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,7 +17,7 @@ const Header = ({ title }) => {
         <h1 className='text-2xl font-semibold text-gray-100'>{title}</h1>
         <div className='flex items-center space-x-4'>
           <p>
-          Logged in as <span className='font-semibold'>{email}</span>
+          Logged in as <span className='font-semibold'>{fullName}</span>
           </p>
           <button 
             onClick={handleLogout} 

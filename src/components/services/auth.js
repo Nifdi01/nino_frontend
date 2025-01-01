@@ -1,56 +1,67 @@
-// auth.js
 import api from "./api";
 
-export const registerUser = async(credentials) => {
-    try {
-        const response = await api.post('/users/register/', credentials);
-        return response.data;
-    } catch (error) {
-        console.error('API Error: ', error);
-        const errorData = error.response?.data;
-        let errorMessage = 'Registration failed. Please try again.';
-    
-        if (errorData) {
-            if (errorData.detail){
-                errorMessage = errorData.detail;
-            } else if (errorData.error){
-                errorMessage.Object.values(errorData.errors).flat().join(' ');
-            }
-        }
-        throw { detail: errorMessage};
+export const registerUser = async (credentials) => {
+  console.log(credentials);
+  try {
+    const response = await api.post('/users/register/', credentials); // API call to login endpoint
+
+
+    return response.data; // Return the response data if successful
+  } catch (error) {
+    // console.error('API Error:', error);
+
+    const errorData = error.response?.data; // Adjusted for nested "errors"
+    let errorMessage = 'Registration failed. Please try again.'; // Default error message
+
+
+    if (errorData) {
+      // Extract field-specific errors and format them
+      errorMessage = Object.entries(errorData)
+        .map(([field, messages]) => `${messages.join(', ')}`)
+        .join(' | ');
     }
-}
+
+    throw new Error(errorMessage); // Throw the formatted error
+  }
+};
+
+
+
 
 export const loginUser = async (credentials) => {
-//   console.log('Login credentials:', credentials); // Debug
   try {
-    const response = await api.post('/users/login/', credentials); // Full endpoint path
-    // Save tokens to localStorage
+    const response = await api.post('/users/login/', credentials); // API call to login endpoint
+
+    // Save tokens and user information to localStorage
     localStorage.setItem('accessToken', response.data.access);
     localStorage.setItem('refreshToken', response.data.refresh);
     localStorage.setItem('userEmail', response.data.email);
+    localStorage.setItem('userFirstName', response.data.first_name);
+    localStorage.setItem('userLastName', response.data.last_name);
+    localStorage.setItem('userFullName', response.data.full_name);
     localStorage.setItem('userCompany', response.data.company);
     localStorage.setItem('userRole', response.data.role);
-    return response.data
-  } catch (error) {
-    console.error('API Error:', error); // Debug
 
-    // Extract error messages
-    const errorData = error.response?.data;
-    let errorMessage = 'Login failed. Please try again.';
+    return response.data; // Return the response data if successful
+  } catch (error) {
+    // console.error('API Error:', error);
+
+    const errorData = error.response?.data; // Adjusted for nested "errors"
+    let errorMessage = 'Login failed. Please try again.'; // Default error message
+
+    console.log(errorData);
 
     if (errorData) {
-      if (errorData.detail) {
-        errorMessage = errorData.detail;
-      } else if (errorData.errors) {
-        // Combine all error messages into a single string
-        errorMessage = Object.values(errorData.errors).flat().join(' ');
-      }
+      // Extract field-specific errors and format them
+      errorMessage = Object.entries(errorData)
+        .map(([field, messages]) => `${messages.join(', ')}`)
+        .join(' | ');
     }
 
-    throw { detail: errorMessage };
+    throw new Error(errorMessage); // Throw the formatted error
   }
 };
+
 
 export const logoutUser = () => {
   localStorage.removeItem("accessToken");

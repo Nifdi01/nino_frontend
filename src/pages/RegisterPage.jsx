@@ -4,9 +4,12 @@ import { registerUser } from '../components/services/auth'; // Login function fr
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
+  const [first_name, setFirstName] = useState(''); 
+  const [last_name, setLastName] = useState(''); 
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
-  const [company, setCompany] = useState('');
+  const [company_name, setCompanyName] = useState('');
+
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
@@ -14,7 +17,7 @@ const RegisterPage = () => {
     e.preventDefault();
     setError(null); // Reset previous errors
     try {
-      await registerUser({ email, password, company });
+      await registerUser({ first_name, last_name, email, password, company_name });
       navigate('/'); // Redirect to the overview page after login
     } catch (err) {
       // Handle different error structures
@@ -34,6 +37,32 @@ const RegisterPage = () => {
         <h1 className='text-2xl mb-4'>Register</h1>
         {error && <p className='text-red-500 mb-4'>{error}</p>}
         <form onSubmit={handleRegister}>
+        <div className='w-full mb-4 grid md:grid-cols-2 sm:grid-cols-1 gap-8'>
+            <div className='w-full'>
+              <label htmlFor='first_name' className='block mb-2'>First Name</label>
+              <input
+                type='text'
+                id='first_name'
+                value={first_name}
+                onChange={(e) => setFirstName(e.target.value)}
+                className='w-full p-2 bg-gray-700 rounded'
+                required
+                autoFocus
+              />
+            </div>
+            <div className='w-full'>
+              <label htmlFor='last_name' className='block mb-2'>Last Name</label>
+              <input
+                type='text'
+                id='last_name'
+                value={last_name}
+                onChange={(e) => setLastName(e.target.value)}
+                className='w-full p-2 bg-gray-700 rounded'
+                required
+                autoFocus
+              />
+            </div>
+          </div>
           <div className='mb-4'>
             <label htmlFor='email' className='block mb-2'>Email</label>
             <input
@@ -57,14 +86,13 @@ const RegisterPage = () => {
               required
             />
           </div>
-          {/* Remove 'company' field if not needed */}
           <div className='mb-4'>
-            <label htmlFor='company' className='block mb-2'>Company</label>
+            <label htmlFor='company_name' className='block mb-2'>Company</label>
             <input
               type='text'
-              id='company'
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
+              id='company_name'
+              value={company_name}
+              onChange={(e) => setCompanyName(e.target.value)}
               className='w-full p-2 bg-gray-700 rounded'
               required
             />
