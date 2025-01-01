@@ -23,6 +23,9 @@ const NewsList = () => {
   const [selectedSources, setSelectedSources] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
+  
+  // Ref for date picker
+  const datePickerRef = useRef(null);
 
   // State for Resizing
   const [isVisible, setIsVisible] = useState(true);
@@ -105,7 +108,7 @@ const NewsList = () => {
   const getItemSize = useCallback(
     (index) => {
       const product = filteredProducts[index];
-      let size = 80; // Base size for title, source, keywords
+      let size = 100; // Base size for title, source, keywords
 
       // Estimate additional height based on number of keywords
       if (product.keywords && product.keywords.length > 0) {
@@ -138,6 +141,31 @@ const NewsList = () => {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        datePickerRef.current &&
+        !datePickerRef.current.contains(event.target)
+      ) {
+        setShowDatePicker(false); // Close the calendar
+      }
+    };
+
+    const handleEscapeKey = (event) => {
+      if (event.key === "Escape") {
+        setShowDatePicker(false); // Close the calendar
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscapeKey);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [datePickerRef, setShowDatePicker]);
 
   return (
     <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6">
@@ -172,16 +200,16 @@ const NewsList = () => {
                 <Calendar className="mr-2 bg-gray-800" size={18} />
                 {`${dateRange[0].startDate.toLocaleDateString()} - ${dateRange[0].endDate.toLocaleDateString()}`}
               </button>
+
               {showDatePicker && (
-                <div className="absolute z-10 mt-2 bg-gray-800">
+                <div
+                  className="absolute z-10 mt-2 bg-gray-800"
+                  ref={datePickerRef} // Add a ref to the calendar dropdown
+                >
                   <DateRange
                     editableDateInputs={true}
                     onChange={(item) => {
                       setDateRange([item.selection]);
-                      setShowDatePicker(false);
-                      if (listRef.current) {
-                        listRef.current.resetAfterIndex(0, true);
-                      }
                     }}
                     moveRangeOnFirstSelection={false}
                     ranges={dateRange}
@@ -191,6 +219,7 @@ const NewsList = () => {
               )}
             </div>
           )}
+
 
           {/* Source Dropdown */}
           <Select
