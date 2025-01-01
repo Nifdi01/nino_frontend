@@ -11,6 +11,9 @@ const NewsCard = ({ product, style}) => {
         target="_blank" // Opens the link in a new tab
         rel="noopener noreferrer" // Security best practice
       >
+        {/* Date */}
+        <p className='text-gray-400 text-sm'>{product.date}</p>
+
         {/* Title */}
         <h5 className="mb-1 text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {product.title}

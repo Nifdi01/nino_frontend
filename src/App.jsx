@@ -6,8 +6,8 @@ import NewsPage from './pages/NewsPage';
 import Sidebar from './components/common/Sidebar';
 import LoginPage from './pages/LoginPage'; // Assuming you have a login page
 import ProtectedRoute from './components/services/ProtectedRoute'; // Create this component as described earlier
-import { logoutUser } from './components/services/auth';
 import RegisterPage from './pages/RegisterPage';
+import SettingsPage from './pages/SettingsPage';
 
 function App() {
   return (
@@ -57,6 +57,14 @@ function App() {
           element={
             <ProtectedRoute>
               <NewsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='/settings'
+          element={
+            <ProtectedRoute>
+              <SettingsPage />
             </ProtectedRoute>
           }
         />

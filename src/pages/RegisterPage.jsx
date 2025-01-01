@@ -16,17 +16,20 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setError(null); // Reset previous errors
+    
     try {
       await registerUser({ first_name, last_name, email, password, company_name });
       navigate('/'); // Redirect to the overview page after login
     } catch (err) {
-      // Handle different error structures
+      // Handle error responses
       if (err.detail) {
-        setError(err.detail);
+        setError(err.detail); // Detailed error from the server
       } else if (typeof err === 'string') {
-        setError(err);
+        setError(err); // String error
+      } else if (err.message) {
+        setError(err.message); // JavaScript Error object message
       } else {
-        setError('Registration failed. Please try again.');
+        setError('An unexpected error occurred. Please try again.');
       }
     }
   };
