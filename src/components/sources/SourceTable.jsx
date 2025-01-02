@@ -40,10 +40,9 @@ const SourceTable = () => {
 
 
 
-    const handleSourceDelete = useCallback(async (source) => {
+    const handleSourceDelete = useCallback(async (id) => {
         try {
-            setSources(prevSources => prevSources.filter(source => source.id !== source.id));
-            toast.info(`${source.name} deleted successfully`);
+            setSources(prevSources => prevSources.filter(source => source.id !== id));
         } catch (error) {
             console.error("Failed to delete source:", error);
             toast.error("Failed to delete source");

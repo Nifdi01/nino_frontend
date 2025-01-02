@@ -5,13 +5,14 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CSS
 
 const SourceRow = ({ product, style, onDelete }) => {
-    const handleDelete = async (source) => {
+    const handleDelete = async () => {
         try {
-            await deleteSource(source.id);  // Pass the id instead of the whole source
-            onDelete(source);  // Pass the id to the parent
+            await deleteSource(product.id);  // Perform the delete operation
+            onDelete(product.id);  // Pass only the 'id' to the parent
+            toast.success(`${product.name} deleted successfully`);
         } catch (error) {
             console.error(error);
-            toast.error(`Failed to delete ${source.name}`);
+            toast.error(`Failed to delete ${product.name}`);
         }
     };
 
@@ -19,7 +20,7 @@ const SourceRow = ({ product, style, onDelete }) => {
         <div style={style} className='grid grid-cols-5 items-center px-4 py-2 border-b border-gray-700'>
             <div className='text-gray-100'>{product.name}</div>
             <div className='text-gray-100'>{product.platform}</div>
-            <div className='text-gray-100'>{product.link}</div>
+            <a target='_blank' href={product.link} className='text-blue-400 truncate'>{product.link}</a>
             <div className='text-gray-300'>
                 {product.active ? (
                     <span className="text-red-700 border border-red-700 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500">
