@@ -1,9 +1,11 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 import { Edit, Search, Trash2 } from "lucide-react";
 import SourceRow from "./SourceRow";
 import AddSourceModal from "../modals/AddSourceModal";
 import { getSources } from "../../services/sources";
+import { ToastContainer, Slide, toast } from 'react-toastify';
+import { deleteSource } from "../../services/sources";
 
 const SourceTable = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -15,8 +17,12 @@ const SourceTable = () => {
 
     useEffect(() => {
         async function fetchSources() {
-            const sources = await getSources();
-            setSources(sources);
+            try {
+                const sources = await getSources();
+                setSources(sources);
+            } catch (error) {
+                console.error("Failed to fetch sources:", error);
+            }
         }
         fetchSources();
     }, []);
@@ -32,13 +38,30 @@ const SourceTable = () => {
         setSearchTerm(e.target.value);
     };
 
-    const Row = ({ index, style, data }) => {
+
+
+    const handleSourceDelete = useCallback(async (source) => {
+        try {
+            setSources(prevSources => prevSources.filter(source => source.id !== source.id));
+            toast.info(`${source.name} deleted successfully`);
+        } catch (error) {
+            console.error("Failed to delete source:", error);
+            toast.error("Failed to delete source");
+        }
+    }, []);
+
+    const handleSourceCreate = useCallback((newSource) => {
+        setSources(prevSources => [...prevSources, newSource]);
+        toast.success(`${newSource.name} added to sources`);
+    }, []);
+
+    const Row = useCallback(({ index, style, data }) => {
         const source = data[index];
-        return <SourceRow product={source} style={style} />;
-    };
+        return <SourceRow key={source.id} product={source} style={style} onDelete={handleSourceDelete} />;
+    }, [handleSourceDelete]);
 
     return (
-        <div className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6'>
+        <div className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6'>
             <div className='flex flex-col md:flex-row justify-between items-center mb-4'>
                 <h2 className='text-xl font-semibold text-gray-100 mb-4 md:mb-0'>Sources</h2>
                 <div className="flex flex-col md:flex-row gap-2 w-full md:w-auto">
@@ -49,7 +72,7 @@ const SourceTable = () => {
                         Add Source
                     </button>
 
-                    {isModalOpen && <AddSourceModal onClose={closeModal} />}
+                    {isModalOpen && <AddSourceModal onClose={closeModal} onCreate={handleSourceCreate} />}
 
                     <div className='relative w-full md:w-auto'>
                         <input

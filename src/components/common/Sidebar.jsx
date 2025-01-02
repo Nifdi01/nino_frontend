@@ -22,7 +22,7 @@ const Sidebar = memo(() => {
     className={`z-10 transition-all duration-300 ease-in-out flex-shrink-0 ${isSidebarOpen ? 'w-64' : 'w-20'}`}
     animate={{ width: isSidebarOpen ? 256 : 80 }}
     >
-      <div className='h-full bg-gray-800 bg-opacity-50 backdrop-blur-md p-4 flex flex-col border-r border-gray-700'>
+      <div className='h-full bg-gray-800 bg-opacity-50  p-4 flex flex-col border-r border-gray-700'>
         <div className="flex items-center">
           <motion.button
             whileHover={{ scale: 1.1 }}

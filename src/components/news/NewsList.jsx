@@ -168,7 +168,7 @@ const NewsList = () => {
   }, [datePickerRef, setShowDatePicker]);
 
   return (
-    <div className="bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg rounded-xl p-6">
+    <div className="bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6">
       <h2 className='text-xl font-semibold text-gray-100 mb-4'>News</h2>
       {/* Search Input */}
       <div className="mt-2">

@@ -10,7 +10,7 @@ const Header = ({ title }) => {
   };
 
   return (
-    <header className='bg-gray-800 bg-opacity-50 backdrop-blur-md shadow-lg border-b border-gray-700'>
+    <header className='bg-gray-800 bg-opacity-50  shadow-lg border-b border-gray-700'>
       <div className='container flex justify-between items-center mx-auto px-4 py-4'>
         <h1 className='text-2xl font-semibold text-gray-100'>{title}</h1>
         <div className='flex items-center space-x-4'>

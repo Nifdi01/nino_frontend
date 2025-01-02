@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage'; // Assuming you have a login page
 import ProtectedRoute from './services/ProtectedRoute'; // Create this component as described earlier
 import RegisterPage from './pages/RegisterPage';
 import SettingsPage from './pages/SettingsPage';
+import {ToastContainer, Slide} from 'react-toastify';
 
 function App() {
   return (
@@ -15,7 +16,6 @@ function App() {
       {/* Background */}
       <div className='fixed inset-0 z-0'>
         <div className='absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 opacity-80' />
-        {/* <div className='absolute inset-0 backdrop-blur-sm' /> */}
       </div>
 
       {/* Sidebar */}
@@ -69,6 +69,16 @@ function App() {
           }
         />
       </Routes>
+      <ToastContainer
+                position="bottom-right"
+                autoClose={1500}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                theme="dark"
+                transition={Slide}
+            />
     </div>
   );
 }
