@@ -21,7 +21,7 @@ const SourcesPage = () => {
                 const statisticsData = await getSourceStatistics();  // Rename variable to avoid shadowing state variable
                 setStatistics(statisticsData);  // Update state with the fetched data
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         }
         fetchStatistics();  // Call fetchStatistics inside useEffect

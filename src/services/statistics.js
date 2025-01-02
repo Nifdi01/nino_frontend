@@ -19,3 +19,13 @@ export const getSourceStatistics = async () => {
         throw new Error(error);
     }
 }
+
+
+export const getKeywordStatistics = async () => {
+    try {
+        const response = await api.get('/statistics/keywords/');
+        return response.data;
+    } catch (error){
+        throw new Error(error);
+    }
+}

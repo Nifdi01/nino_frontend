@@ -1,8 +1,20 @@
 import { Edit, Trash2 } from 'lucide-react';
 import React from 'react';
+import { deleteKeyword } from '../../services/keywords';
+import { toast } from 'react-toastify';
 
 
-const KeywordRow = ({ product, style }) => {
+const KeywordRow = ({ product, style, onDelete }) => {
+    const handleOnDelete = async () => {
+        try {
+            await deleteKeyword(product.id);
+            onDelete(product.id);
+            toast.success(`${product.name} deleted successfully`);
+        } catch(error) {
+            toast.error(`Failed to delete ${product.name}`);
+        }
+    }
+
     return (
         <div
             style={style}
@@ -25,7 +37,7 @@ const KeywordRow = ({ product, style }) => {
                 <button className='text-indigo-400 hover:text-indigo-300'>
                     <Edit size={18} />
                 </button>
-                <button className='text-red-400 hover:text-red-300'>
+                <button className='text-red-400 hover:text-red-300' onClick={() => handleOnDelete(product)}>
                     <Trash2 size={18} />
                 </button>
             </div>

@@ -51,7 +51,7 @@ const AddSourceModal = ({ onClose, onCreate, platforms }) => {
             onCreate(newSource);
             onClose();
         } catch (error) {
-            toast.error("Link Already Exists", error);
+            toast.error("Error saving source", error);
         } finally {
             setIsSubmitting(false);
         }

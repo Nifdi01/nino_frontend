@@ -1,27 +1,14 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 import { Edit, Search, Trash2 } from "lucide-react";
 import KeywordRow from "./KeywordRow";
 import AddKeywordModal from "../modals/AddKeywordModal";
-
-const PRODUCT_DATA = [
-	{ id: 1, name: "AZAL",  active: true },
-    { id: 2, name: "Russia", active: true },
-    { id: 3, name: "Grozny", active: false },
-    { id: 4, name: "Airplanes", active: false },
-    { id: 6, name: "Azerbaijan", active: true },
-	// Add more rows to test virtual scrolling
-	...Array.from({ length: 100 }, (_, i) => ({
-		id: i + 7,
-		name: `keyword ${i + 7}`,
-		active: i % 2 === 0,
-	})),
-];
+import { getKeywordStatistics } from "../../services/statistics";
 
 
-const KeywordsTable = () => {
+
+const KeywordsTable = ({keywords, setKeywords, setStatistics}) => {
 	const [searchTerm, setSearchTerm] = useState("");
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const openModal = () => setIsModalOpen(true);
@@ -29,19 +16,39 @@ const KeywordsTable = () => {
 
     const filteredProducts = useMemo(() => {
         const term = searchTerm.toLowerCase();
-        return PRODUCT_DATA.filter(product =>
+        return keywords.filter(product =>
           product.name.toLowerCase().includes(term)
         );
-    }, [searchTerm]);
+    }, [searchTerm, keywords]);
     
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
 
-    const Row = ({ index, style, data }) => {
-        const product = data[index];
-        return <KeywordRow product={product} style={style} />;
-    };
+    
+    const handleKeywordDelete = useCallback(async (id) => {
+        try {
+            setKeywords(prevKeywords => prevKeywords.filter(keyword => keyword.id !== id));
+            const updatedStatistics = await getKeywordStatistics();
+            setStatistics(updatedStatistics);
+        } catch(error) {
+            toast.error("Failed to delete keyword");
+        }
+    }, []);
+
+
+    const handleKeywordCreate = useCallback(async (newKeyword) => {
+        setKeywords(prevKeywords => [...prevKeywords, newKeyword]);
+        const updatedStatistics = await getKeywordStatistics();
+        setStatistics(updatedStatistics);
+        toast.success(`${newKeyword.name} added to keywords`);
+    }, []);
+
+
+    const Row = useCallback(({ index, style, data }) => {
+        const keyword = data[index];
+        return <KeywordRow key={keyword.id} product={keyword} style={style} onDelete={handleKeywordDelete} />;
+    }, [handleKeywordDelete]);
 
     return (
         <div className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6'>
@@ -56,7 +63,7 @@ const KeywordsTable = () => {
                     </button>
     
                     {/* Add Source Modal */}
-                    {isModalOpen && <AddKeywordModal onClose={closeModal} />}
+                    {isModalOpen && <AddKeywordModal onClose={closeModal} onCreate={handleKeywordCreate} />}
     
                     <div className='relative w-full md:w-auto'>
                         <input

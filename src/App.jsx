@@ -78,6 +78,7 @@ function App() {
                 rtl={false}
                 theme="dark"
                 transition={Slide}
+                limit={3}
             />
     </div>
   );

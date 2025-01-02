@@ -3,9 +3,6 @@ import { FixedSizeList as List } from "react-window";
 import { Edit, Search, Trash2 } from "lucide-react";
 import SourceRow from "./SourceRow";
 import AddSourceModal from "../modals/AddSourceModal";
-import { getSources } from "../../services/sources";
-import { ToastContainer, Slide, toast } from 'react-toastify';
-import { deleteSource } from "../../services/sources";
 import { getSourceStatistics } from "../../services/statistics";
 
 const SourceTable = ({sources, platforms, setSources, setStatistics}) => {
@@ -25,7 +22,6 @@ const SourceTable = ({sources, platforms, setSources, setStatistics}) => {
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
     };
-
 
 
     const handleSourceDelete = useCallback(async (id) => {

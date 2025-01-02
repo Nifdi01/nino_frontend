@@ -4,8 +4,39 @@ import { motion } from "framer-motion";
 import { TrendingUp,  TrendingDown, WholeWord, Key } from "lucide-react";
 import KeywordsTable from "../components/keywords/KeywordsTable";
 import KeywordDistributionChart from "../components/overview/KeywordDistributionChart";
+import { useEffect, useState } from "react";
+import { getKeywordStatistics } from "../services/statistics";
+import { getKeywords } from "../services/keywords";
 
 const KeywordsPage = () => {
+    const [keywords, setKeywords] = useState([]);
+    const [statistics, setStatistics] = useState({});
+
+    useEffect(() => {
+        async function fetchStatistics(){
+            try {
+                const statisticsData = await getKeywordStatistics();
+                setStatistics(statisticsData);
+            } catch (error){
+                console.error(error);
+            }
+        }
+        fetchStatistics();
+    }, []);
+
+
+    useEffect(() => {
+        async function fetchKeywords() {
+            try {
+                const keywords = await getKeywords();
+                setKeywords(keywords);
+            } catch (error){
+                console.error(error);
+            }
+        }
+        fetchKeywords();
+    }, []);
+
     return (
         <div className='flex-1 overflow-auto relative z-10'>
             <Header title="Keywords" />
@@ -17,13 +48,13 @@ const KeywordsPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 >
-					<StatCard name='Keywords' icon={WholeWord} value='32' color='#8B5CF6' />
-                    <StatCard name='Least Active' icon={TrendingDown} value='Grozny' color='#6366F1' />
-					<StatCard name='Most Active' icon={TrendingUp} value='AZAL' color='#EF4444' />
+					<StatCard name='Keywords' icon={WholeWord} value={statistics?.total || 'None'} color='#8B5CF6' />
+                    <StatCard name='Least Active' icon={TrendingDown} value={statistics?.least_frequent?.name  || 'None'} color='#6366F1' />
+					<StatCard name='Most Active' icon={TrendingUp} value={statistics?.most_frequent?.name  || 'None'} color='#EF4444' />
                 </motion.div>
 
                 {/* Table of Sources */}
-                <KeywordsTable />
+                <KeywordsTable keywords={keywords} setKeywords={setKeywords} setStatistics={setStatistics} />
 
                 {/* CHARTS */}
                 <div className="grid grid-cols-1 mt-8">
