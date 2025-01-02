@@ -4,7 +4,7 @@ import { deleteSource } from '../../services/sources';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CSS
 
-const SourceRow = ({ product, style, onDelete }) => {
+const SourceRow = ({ product, platform, style, onDelete }) => {
     const handleDelete = async () => {
         try {
             await deleteSource(product.id);  // Perform the delete operation
@@ -19,7 +19,7 @@ const SourceRow = ({ product, style, onDelete }) => {
     return (
         <div style={style} className='grid grid-cols-5 items-center px-4 py-2 border-b border-gray-700'>
             <div className='text-gray-100'>{product.name}</div>
-            <div className='text-gray-100'>{product.platform}</div>
+            <div className='text-gray-100'>{platform ? platform.name : "Loading Platform..."}</div>
             <a target='_blank' href={product.link} className='text-blue-400 truncate'>{product.link}</a>
             <div className='text-gray-300'>
                 {product.active ? (

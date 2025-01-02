@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 import { createSource } from "../../services/sources";
+import { toast } from "react-toastify";
 
 
-const AddSourceModal = ({ onClose, onCreate }) => {
+const AddSourceModal = ({ onClose, onCreate, platforms }) => {
+
     const [formData, setFormData] = useState({
         name: "",
-        platform: "website",
+        platform: 1,  // Initialize as empty string to select from the dropdown
         link: ""
     });
 
     const [errors, setErrors] = useState({});
-    const [isSubmitting, setIsSubmitting] = useState(false); // For handling submission state
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,6 +31,7 @@ const AddSourceModal = ({ onClose, onCreate }) => {
         } else if (!/^https?:\/\/\S+$/.test(formData.link)) {
             newErrors.link = "Link must be a valid URL.";
         }
+        if (!formData.platform) newErrors.platform = "Platform is required.";  // Add platform validation
         return newErrors;
     };
 
@@ -43,11 +46,12 @@ const AddSourceModal = ({ onClose, onCreate }) => {
         }
 
         try {
-            const newSource = await createSource(formData); // Receive the full source object with 'id'
-            onCreate(newSource); // Pass the complete source to the parent
-            onClose(); // Close the modal on successful submit
+            console.log(formData);
+            const newSource = await createSource(formData); // Send platform as id (not name)
+            onCreate(newSource);
+            onClose();
         } catch (error) {
-            console.error("Error saving source:", error);
+            toast.error("Link Already Exists", error);
         } finally {
             setIsSubmitting(false);
         }
@@ -64,7 +68,6 @@ const AddSourceModal = ({ onClose, onCreate }) => {
             window.removeEventListener("keydown", handleKeyDown);
         };
     }, [onClose]);
-
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -93,11 +96,10 @@ const AddSourceModal = ({ onClose, onCreate }) => {
                             onChange={handleChange}
                             className="w-full pl-4 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 bg-gray-800 text-gray-100 appearance-none"
                         >
-                            <option value="website">Website</option>
-                            <option value="telegram">Telegram</option>
-                            <option value="facebook">Facebook</option>
-                            <option value="instagram">Instagram</option>
-                            <option value="twitter">Twitter</option>
+                            <option value="">Select Platform</option>
+                            {platforms.map((platform) => (
+                                <option key={platform.id} value={platform.id}>{platform.name}</option>
+                            ))}
                         </select>
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center mb-3 pr-4">
                             <ChevronDown className="text-gray-100" />

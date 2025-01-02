@@ -6,26 +6,14 @@ import AddSourceModal from "../modals/AddSourceModal";
 import { getSources } from "../../services/sources";
 import { ToastContainer, Slide, toast } from 'react-toastify';
 import { deleteSource } from "../../services/sources";
+import { getSourceStatistics } from "../../services/statistics";
 
-const SourceTable = () => {
+const SourceTable = ({sources, platforms, setSources, setStatistics}) => {
     const [searchTerm, setSearchTerm] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [sources, setSources] = useState([]);
-
+    
     const openModal = () => setIsModalOpen(true);
     const closeModal = () => setIsModalOpen(false);
-
-    useEffect(() => {
-        async function fetchSources() {
-            try {
-                const sources = await getSources();
-                setSources(sources);
-            } catch (error) {
-                console.error("Failed to fetch sources:", error);
-            }
-        }
-        fetchSources();
-    }, []);
 
     const filteredProducts = useMemo(() => {
         const term = searchTerm.toLowerCase();
@@ -43,21 +31,33 @@ const SourceTable = () => {
     const handleSourceDelete = useCallback(async (id) => {
         try {
             setSources(prevSources => prevSources.filter(source => source.id !== id));
+            
+            const updatedStatistics = await getSourceStatistics();
+            setStatistics(updatedStatistics);
+
         } catch (error) {
             console.error("Failed to delete source:", error);
             toast.error("Failed to delete source");
         }
     }, []);
+    
 
-    const handleSourceCreate = useCallback((newSource) => {
+    const handleSourceCreate = useCallback(async (newSource) => {
         setSources(prevSources => [...prevSources, newSource]);
+        const updatedStatistics = await getSourceStatistics();
+        setStatistics(updatedStatistics);
         toast.success(`${newSource.name} added to sources`);
     }, []);
 
     const Row = useCallback(({ index, style, data }) => {
         const source = data[index];
-        return <SourceRow key={source.id} product={source} style={style} onDelete={handleSourceDelete} />;
-    }, [handleSourceDelete]);
+        // console.log("ROW: ", platforms);
+        const platform = platforms.find((p) => p.id === source.platform); // Find the platform by ID
+        return <SourceRow key={source.id} platform={platform}  product={source} style={style} onDelete={handleSourceDelete} />;
+    }, [handleSourceDelete, platforms]);
+
+
+    
 
     return (
         <div className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6'>
@@ -71,7 +71,7 @@ const SourceTable = () => {
                         Add Source
                     </button>
 
-                    {isModalOpen && <AddSourceModal onClose={closeModal} onCreate={handleSourceCreate} />}
+                    {isModalOpen && <AddSourceModal onClose={closeModal} onCreate={handleSourceCreate} platforms={platforms} />}
 
                     <div className='relative w-full md:w-auto'>
                         <input
