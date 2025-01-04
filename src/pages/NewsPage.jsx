@@ -25,10 +25,6 @@ const SourcesPage = () => {
 
                 {/* Table of Sources */}
                 <NewsList />
-                {/* CHARTS */}
-                <div className="grid grid-cols-1 mt-8">
-                    <ScrapeOverviewChart />
-                </div>
             </main>
         </div>
     )

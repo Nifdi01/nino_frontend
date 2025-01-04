@@ -52,7 +52,6 @@ const SourcesPage = () => {
         fetchData();
     }, []);
 
-
     return (
         <div className='flex-1 overflow-auto relative z-10'>
             <Header title="Sources" />
@@ -67,17 +66,11 @@ const SourcesPage = () => {
                     <StatCard name='Sources' icon={Rss} value={statistics?.total} color='#8B5CF6' />
                     <StatCard name='Least Active' icon={TrendingDown} value={statistics?.least_active?.name || 'None'} color='#6366F1' />
                     <StatCard name='Most Active' icon={TrendingUp} value={statistics?.most_active?.name || 'None'} color='#EF4444' />
-                    <StatCard name='Top Platform' icon={Search} value={statistics?.top_platform?.platform?.name || 'None'} color='#EF4444' />
+                    <StatCard name='Top Platform' icon={Search} value={statistics?.top_platform?.name || 'None'} color='#EF4444' />
                 </motion.div>
 
                 {/* Table of Sources */}
                 <SourceTable sources={sources} platforms={platforms} setSources={setSources} setStatistics={setStatistics} />
-
-                {/* CHARTS */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-                    <ScrapingBySourceChart />
-                    <SourcePlatformDistribution />
-                </div>
             </main>
         </div>
     )

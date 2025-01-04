@@ -55,12 +55,6 @@ const KeywordsPage = () => {
 
                 {/* Table of Sources */}
                 <KeywordsTable keywords={keywords} setKeywords={setKeywords} setStatistics={setStatistics} />
-
-                {/* CHARTS */}
-                <div className="grid grid-cols-1 mt-8">
-                    <KeywordDistributionChart />
-                    {/* <SourcePlatformDistribution /> */}
-                </div>
             </main>
         </div>
     )
