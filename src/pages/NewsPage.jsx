@@ -2,7 +2,6 @@ import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import { motion } from "framer-motion";
 import { Newspaper, Search, TrendingUp,  TrendingDown } from "lucide-react";
-import ScrapeOverviewChart from "../components/overview/ScrapeOverviewChart";
 import NewsList from "../components/news/NewsList";
 
 const SourcesPage = () => {

@@ -1,8 +1,14 @@
 import api from './api';
 
-export const getKeywords = async () => {
+export const getKeywords = async (page=1, pageSize=20, searchTerm="") => {
     try {
-        const response  = await api.get('keywords/');
+        const response  = await api.get('keywords/', {
+            params:{
+                page,
+                page_size: pageSize,
+                search: searchTerm,
+            },
+        });
         return response.data;
     } catch (error){
         throw new Error(error);

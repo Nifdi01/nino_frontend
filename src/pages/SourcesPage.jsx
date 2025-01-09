@@ -2,18 +2,12 @@ import Header from "../components/common/Header";
 import StatCard from "../components/common/StatCard";
 import { motion } from "framer-motion";
 import { Rss, Search, TrendingUp, TrendingDown } from "lucide-react";
-import ScrapingBySourceChart from "../components/overview/ScrapingBySourceChart";
 import SourceTable from "../components/sources/SourceTable";
-import SourcePlatformDistribution from "../components/sources/SourcePlatformDistribution";
-import { getSources } from '../services/sources';
 import { useState, useEffect } from "react";
 import { getSourceStatistics } from "../services/statistics";
-import { getPlatforms } from "../services/platforms";
 
 const SourcesPage = () => {
-    const [sources, setSources] = useState([]);
     const [statistics, setStatistics] = useState({});
-    const [platforms, setPlatform] = useState([]);
 
     useEffect(() => {
         async function fetchStatistics() {
@@ -25,31 +19,6 @@ const SourcesPage = () => {
             }
         }
         fetchStatistics();  // Call fetchStatistics inside useEffect
-    }, []);
-
-    useEffect(() => {
-        async function fetchSources() {
-            try {
-                const sources = await getSources();
-                setSources(sources);
-            } catch (error) {
-                console.error("Failed to fetch sources:", error);
-            }
-        }
-        fetchSources();
-    }, []);
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const platformData = await getPlatforms();
-                setPlatform(platformData);
-            } catch (error) {
-                console.error(error);
-            }
-        }
-        fetchData();
     }, []);
 
     return (
@@ -70,7 +39,7 @@ const SourcesPage = () => {
                 </motion.div>
 
                 {/* Table of Sources */}
-                <SourceTable sources={sources} platforms={platforms} setSources={setSources} setStatistics={setStatistics} />
+                <SourceTable setStatistics={setStatistics} />
             </main>
         </div>
     )

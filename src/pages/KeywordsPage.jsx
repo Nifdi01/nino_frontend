@@ -3,7 +3,6 @@ import StatCard from "../components/common/StatCard";
 import { motion } from "framer-motion";
 import { TrendingUp,  TrendingDown, WholeWord, Key } from "lucide-react";
 import KeywordsTable from "../components/keywords/KeywordsTable";
-import KeywordDistributionChart from "../components/overview/KeywordDistributionChart";
 import { useEffect, useState } from "react";
 import { getKeywordStatistics } from "../services/statistics";
 import { getKeywords } from "../services/keywords";

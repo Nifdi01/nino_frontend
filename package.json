@@ -23,6 +23,7 @@
     "react-select": "^5.9.0",
     "react-toastify": "^11.0.2",
     "react-window": "^1.8.11",
+    "react-window-infinite-loader": "^1.0.9",
     "recharts": "^2.15.0",
     "vite-plugin-svgr": "^4.3.0"
   },

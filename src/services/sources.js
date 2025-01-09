@@ -1,13 +1,17 @@
 import api from './api';
 
-export const getSources = async () => {
+export const getSources = async (page=1, pageSize=20, searchTerm="") => {
     try {
-        const response = await api.get('sources/');
+        const response = await api.get('sources/', {
+            params: {
+                page,
+                page_size: pageSize,
+                search: searchTerm,
+            },
+        });
         return response.data;
     } catch (error) {
-        let errorMessage = 'Something went wrong...';
-
-        throw new Error(errorMessage);
+        throw new Error(error);
     }
 }
 
