@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { Edit, Search, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
 import SourceRow from "./SourceRow";
 import AddSourceModal from "../modals/AddSourceModal";
 import { getSources } from "../../services/sources";
@@ -14,7 +14,7 @@ import { getPlatforms } from '../../services/platforms'
 
 
 const SourceTable = ({ setStatistics }) => {
-    const [sources, setLocalSources] = useState([]);
+    const [sources, setSources] = useState([]);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [isLoading, setIsLoading] = useState(false);
@@ -44,7 +44,7 @@ const SourceTable = ({ setStatistics }) => {
         setIsLoading(true);
         try {
             const data = await getSources(pageNumber, pageSize, currentSearchTerm);
-            setLocalSources(prev => [...prev, ...data.results]);
+            setSources(prev => [...prev, ...data.results]);
             setHasMore(!!data.next);
             setTotalCount(data.count);
         } catch (error) {
@@ -55,14 +55,6 @@ const SourceTable = ({ setStatistics }) => {
         }
     }, []);
 
-    // Initial fetch and when searchTerm changes
-    useEffect(() => {
-        // Reset when searchTerm changes
-        setLocalSources([]);
-        setPage(1);
-        setHasMore(true);
-        fetchSources(1, searchTerm);
-    }, [fetchSources, searchTerm]);
 
     // Handler for loading more items
     const loadMoreItems = useCallback(() => {
@@ -80,7 +72,7 @@ const SourceTable = ({ setStatistics }) => {
         const delayDebounceFn = setTimeout(() => {
             // Trigger search by updating searchTerm
             // The actual fetching is handled in the main useEffect
-            setLocalSources([]);
+            setSources([]);
             setPage(1);
             setHasMore(true);
             fetchSources(1, searchTerm);
@@ -103,7 +95,7 @@ const SourceTable = ({ setStatistics }) => {
     // Handle source deletion
     const handleSourceDelete = useCallback(async (id) => {
         try {
-            setLocalSources(prevSources => prevSources.filter(source => source.id !== id));
+            setSources(prevSources => prevSources.filter(source => source.id !== id));
 
             const updatedStatistics = await getSourceStatistics();
             setStatistics(updatedStatistics);
@@ -116,7 +108,7 @@ const SourceTable = ({ setStatistics }) => {
 
     // Handle source creation
     const handleSourceCreate = useCallback(async (newSource) => {
-        setLocalSources(prevSources => [newSource, ...prevSources]);
+        setSources(prevSources => [newSource, ...prevSources]);
         const updatedStatistics = await getSourceStatistics();
         setStatistics(updatedStatistics);
         toast.success(`${newSource.name} added to sources.`);
@@ -133,8 +125,6 @@ const SourceTable = ({ setStatistics }) => {
         }
 
         const source = sources[index];
-        // console.log(platforms.find(p => p.id === source.platform));
-        // const platform = 1;
         const platform = platforms.find((p) => p.id === source.platform); // Find the platform by ID
 
         return (

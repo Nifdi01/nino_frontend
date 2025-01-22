@@ -8,7 +8,6 @@ import { getKeywordStatistics } from "../services/statistics";
 import { getKeywords } from "../services/keywords";
 
 const KeywordsPage = () => {
-    const [keywords, setKeywords] = useState([]);
     const [statistics, setStatistics] = useState({});
 
     useEffect(() => {
@@ -21,19 +20,6 @@ const KeywordsPage = () => {
             }
         }
         fetchStatistics();
-    }, []);
-
-
-    useEffect(() => {
-        async function fetchKeywords() {
-            try {
-                const keywords = await getKeywords();
-                setKeywords(keywords);
-            } catch (error){
-                console.error(error);
-            }
-        }
-        fetchKeywords();
     }, []);
 
     return (
@@ -53,7 +39,7 @@ const KeywordsPage = () => {
                 </motion.div>
 
                 {/* Table of Sources */}
-                <KeywordsTable keywords={keywords} setKeywords={setKeywords} setStatistics={setStatistics} />
+                <KeywordsTable setStatistics={setStatistics} />
             </main>
         </div>
     )

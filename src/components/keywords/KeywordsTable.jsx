@@ -1,31 +1,77 @@
-import React, { useState, useMemo, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { FixedSizeList as List } from "react-window";
-import { Edit, Search, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
+import InfiniteLoader from "react-window-infinite-loader";
 import KeywordRow from "./KeywordRow";
 import AddKeywordModal from "../modals/AddKeywordModal";
 import { getKeywordStatistics } from "../../services/statistics";
+import { getKeywords } from "../../services/keywords";
 
 
 
-const KeywordsTable = ({keywords, setKeywords, setStatistics}) => {
-	const [searchTerm, setSearchTerm] = useState("");
-	const [isModalOpen, setIsModalOpen] = useState(false);
+const KeywordsTable = ({setStatistics}) => {
+	const [keywords, setKeywords] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [page, setPage] = useState([]);
+    const [hasMore, setHasMore] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchInput, setSearchInput] = useState("");
+    const [totalCount, setTotalCount] = useState(0);
+
+    const pageSize = 20;
+    
 
 	const openModal = () => setIsModalOpen(true);
 	const closeModal = () => setIsModalOpen(false);
 
-    const filteredProducts = useMemo(() => {
-        const term = searchTerm.toLowerCase();
-        return keywords.filter(product =>
-          product.name.toLowerCase().includes(term)
-        );
-    }, [searchTerm, keywords]);
-    
+    const fetchKeywords = useCallback(async (pageNumber, currentSearchTerm) => {
+        setIsLoading(true);
+        try {
+            const data  = await getKeywords(pageNumber, pageSize, currentSearchTerm);
+            setKeywords(prev => [...prev, ...data.results]);
+            setHasMore(!!data.next);
+            setTotalCount(data.count);
+        } catch (error) {
+            console.error("Failed to fetch keywords: ", error);
+            toast.error("Failed to load keywords");
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
+
+    const loadMoreItems = useCallback(() => {
+        if(!isLoading && hasMore) {
+            fetchKeywords(page+1, searchTerm);
+            setPage(prevPage => prevPage + 1);
+        }
+    }, [fetchKeywords, hasMore, isLoading, page, searchTerm]);
+
+    const isItemLoaded = index => !hasMore || index < keywords.length;
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            setKeywords([]);
+            setPage(1);
+            setHasMore(true)
+            fetchKeywords(1, searchTerm);
+        }, 500);
+        return () => clearTimeout(delayDebounceFn);
+    }, [searchTerm, fetchKeywords]);
+
     const handleSearch = (e) => {
-        setSearchTerm(e.target.value);
+        setSearchInput(e.target.value);
+    }
+    
+    const handleKeyDown = (e) => {
+        if(e.key === "Enter") {
+            setSearchTerm(searchInput.trim());
+        }
     };
 
-    
+
+
     const handleKeywordDelete = useCallback(async (id) => {
         try {
             setKeywords(prevKeywords => prevKeywords.filter(keyword => keyword.id !== id));
@@ -45,10 +91,25 @@ const KeywordsTable = ({keywords, setKeywords, setStatistics}) => {
     }, []);
 
 
-    const Row = useCallback(({ index, style, data }) => {
-        const keyword = data[index];
-        return <KeywordRow key={keyword.id} product={keyword} style={style} onDelete={handleKeywordDelete} />;
-    }, [handleKeywordDelete]);
+    const Row = useCallback(({ index, style }) => {
+        if (!isItemLoaded(index)) {
+            return (
+                <div style={style} className="flex items-center justify-center">
+                    Loading...
+                </div>
+            );
+        }
+        const keyword = keywords[index];
+        return (
+            <KeywordRow 
+                key={keyword.id} 
+                product={keyword} 
+                style={style} 
+                onDelete={handleKeywordDelete} 
+            />
+        );
+            
+    }, [isItemLoaded, keywords, handleKeywordDelete]);
 
     return (
         <div className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6'>
@@ -91,15 +152,26 @@ const KeywordsTable = ({keywords, setKeywords, setStatistics}) => {
                         <div>Active</div>
                         <div>Actions</div>
                     </div>
-                    <List
-                        height={400} // Container height
-                        itemCount={filteredProducts.length} // Total number of rows
-                        itemSize={50} // Row height
-                        width="100%" // Width of the list
-                        itemData={filteredProducts} // Pass filteredProducts as itemData
+                    <InfiniteLoader
+                        isItemLoaded={isItemLoaded}
+                        itemCount={hasMore ? keywords.length + 1 : keywords.length}
+                        loadMoreItems={loadMoreItems}
                     >
-                        { Row }
-                    </List>
+                        {({ onItemsRendered, ref }) => (
+                            <List
+                                height={400}
+                                itemCount={hasMore ? keywords.length + 1 : keywords.length}
+                                itemSize={50}
+                                width="100%"
+                                onItemsRendered={onItemsRendered}
+                                ref={ref}
+                                itemData={keywords}
+                            >
+                                {Row}
+                            </List>
+                        )}
+
+                    </InfiniteLoader>
                 </div>
             </div>
         </div>
