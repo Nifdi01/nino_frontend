@@ -30,7 +30,7 @@ export const createSource = async (source) => {
     try {
         const response = await api.post('/sources/', source);
         console.log('Source Created:', response.data);
-        return response.data; // This should include the 'id' of the new source
+        return response.data;
     } catch (error) {
         console.error('Error creating source:', error);
         throw new Error(error.response?.data?.message || 'Failed to create source');

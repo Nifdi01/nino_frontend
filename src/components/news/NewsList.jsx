@@ -4,7 +4,6 @@ import { VariableSizeList as List } from "react-window";
 import Select from "react-select";
 import { DateRange } from "react-date-range";
 import { Search, Calendar } from "lucide-react"; // Added Calendar icon
-import { PRODUCT_DATA } from "./data"; // Adjust the path as necessary
 import NewsCard from "./NewsCard";
 import { addDays, parseISO, isWithinInterval } from "date-fns"; // Imported necessary functions
 import customSelectStyles from "../utils/CustomSelectStyles";
@@ -12,23 +11,80 @@ import CustomMultiValue from "../utils/CustomMultiValue";
 import "react-date-range/dist/styles.css"; // Main style file
 import "react-date-range/dist/theme/default.css"; // Theme css file
 import "../../css/datepicker.css"
+import { getNews } from "../../services/news";
+import InfiniteLoader from "react-window-infinite-loader";
+import { toast } from "react-toastify";
 
 const NewsList = () => {
   const listRef = useRef();
 
-  // State for search term
+  const [news, setNews] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [totalCount, setTotalCount] = useState(0);
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // State for dropdown filters
+  // Dropdown filters
   const [selectedSources, setSelectedSources] = useState([]);
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const [selectedKeywords, setSelectedKeywords] = useState([]);
-  
+
+  const pageSize = 30;
+
   // Ref for date picker
   const datePickerRef = useRef(null);
 
   // State for Resizing
   const [isVisible, setIsVisible] = useState(true);
+
+  const fetchNews = useCallback(async (pageNumber, currentSearchTerm) => {
+    setIsLoading(true);
+    try {
+      const data = await getNews(pageNumber, pageSize, currentSearchTerm);
+      setNews((prev) => [...prev, ...data.results]);
+      setHasMore(!!data.next);
+      setTotalCount(data.count);
+    } catch (error) {
+      console.error("Failed to fetch news:", error);
+      toast.error("Failed to load news.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+
+  const loadMoreItems = useCallback(() => {
+    if (!isLoading && hasMore) {
+      fetchNews(page + 1, searchTerm);
+      setPage(prevPage => prevPage + 1);
+    }
+  }, [fetchNews, isLoading, hasMore, page, searchTerm]);
+
+  const isItemLoaded = (index) => !hasMore || index < filteredProducts.length;
+
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setNews([]);
+      setPage(1);
+      setHasMore(true);
+      fetchNews(1, searchTerm);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, fetchNews]);
+
+  const handleSearch = (e) => {
+    setSearchInput(e.target.value);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      setSearchTerm(searchInput.trim());
+    }
+  }
 
   // State for date range filtering
   const [dateRange, setDateRange] = useState([
@@ -38,22 +94,21 @@ const NewsList = () => {
       key: "selection",
     },
   ]);
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
   // Generate unique options for dropdowns
   const sourceOptions = useMemo(() => {
-    const sources = Array.from(new Set(PRODUCT_DATA.map((item) => item.source)));
+    const sources = Array.from(new Set(news.map((item) => item.source.name)));
     return sources.map((source) => ({ value: source, label: source }));
-  }, []);
+  }, [news]);
 
   const platformOptions = useMemo(() => {
-    const platforms = Array.from(new Set(PRODUCT_DATA.map((item) => item.platform)));
+    const platforms = Array.from(new Set(news.map((item) => item.platform)));
     return platforms.map((platform) => ({ value: platform, label: platform }));
   }, []);
 
   const keywordOptions = useMemo(() => {
     const keywordsSet = new Set();
-    PRODUCT_DATA.forEach((item) => {
+    news.forEach((item) => {
       item.keywords.forEach((keyword) => keywordsSet.add(keyword));
     });
     const keywords = Array.from(keywordsSet);
@@ -62,19 +117,19 @@ const NewsList = () => {
 
   // Filtering logic
   const filteredProducts = useMemo(() => {
-    return PRODUCT_DATA.filter((product) => {
+    return news.filter((product) => {
       // Filter by search term
       const matchesSearch = product.title.toLowerCase().includes(searchTerm.toLowerCase());
 
       // Filter by sources
       const matchesSource =
         selectedSources.length === 0 ||
-        selectedSources.some((source) => source.value === product.source);
+        selectedSources.some((source) => source.value === product.source.name);
 
       // Filter by platforms
       const matchesPlatform =
         selectedPlatforms.length === 0 ||
-        selectedPlatforms.some((platform) => platform.value === product.platform);
+        selectedPlatforms.some((platform) => platform.value === product.source.platform.name);
 
       // Filter by keywords
       const matchesKeyword =
@@ -83,10 +138,10 @@ const NewsList = () => {
 
       // Filter by date range
       let productDate;
-      if (typeof product.date === "string" || typeof product.date === "number") {
-        productDate = parseISO(product.date);
-      } else if (product.date instanceof Date) {
-        productDate = product.date;
+      if (typeof product.published_at === "string" || typeof product.published_at === "number") {
+        productDate = parseISO(product.published_at);
+      } else if (product.published_at instanceof Date) {
+        productDate = product.published_at;
       } else {
         return false; // Invalid date format
       }
@@ -97,6 +152,7 @@ const NewsList = () => {
       return matchesSearch && matchesSource && matchesPlatform && matchesKeyword && matchesDate;
     });
   }, [
+    news,
     searchTerm,
     selectedSources,
     selectedPlatforms,
@@ -107,29 +163,25 @@ const NewsList = () => {
   // Function to estimate item size
   const getItemSize = useCallback(
     (index) => {
-      const product = filteredProducts[index];
-      let size = 100; // Base size for title, source, keywords
-
-      // Estimate additional height based on number of keywords
-      if (product.keywords && product.keywords.length > 0) {
-        const keywordLines = Math.ceil(product.keywords.length / 5); // Assuming 5 keywords per line
-        size += keywordLines * 15; // 15px per line
-      }
-
-      // Add additional spacing (e.g., 20px) between items
-      size += 20;
-
+      let size = 140; // Base size for title, source, keywords
       return size;
     },
-    [filteredProducts]
+    []
   );
 
 
   // Define the Row component
-  const Row = ({ index, style, data }) => {
-    const product = data[index];
-    return <NewsCard product={product} style={style} />;
-  };
+  const Row = useCallback(({ index, style }) => {
+    if (!isItemLoaded(index)) {
+      return (
+        <div style={style} className="flex items-center justify-center">
+          Loading...
+        </div>
+      );
+    }
+    const product = filteredProducts[index];
+    return <NewsCard key={product.id} product={product} style={style} />;
+  }, [isItemLoaded, filteredProducts]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -282,22 +334,25 @@ const NewsList = () => {
         className="overflow-auto"
         style={{ height: "600px", width: "100%" }}
       >
-        {filteredProducts.length > 0 ? (
-          <List
-            ref={listRef} // Attach the ref
-            height={600} // Container height
-            itemCount={filteredProducts.length} // Total number of rows
-            itemSize={getItemSize} // Dynamic row height function
-            width="100%" // Width of the list
-            itemData={filteredProducts} // Pass filteredProducts as itemData
-          >
-            {Row}
-          </List>
-        ) : (
-          <div className="flex items-center justify-center h-full text-gray-300">
-            No news items match your selected filters.
-          </div>
-        )}
+        <InfiniteLoader
+          isItemLoaded={isItemLoaded}
+          itemCount={hasMore ? filteredProducts.length + 1 : filteredProducts.length}
+          loadMoreItems={loadMoreItems}
+        >
+          {({ onItemsRendered, ref }) => (
+            <List
+              ref={ref} // Attach the ref
+              height={600} // Container height
+              itemCount={hasMore ? filteredProducts.length + 1 : filteredProducts.length} // Total number of rows
+              itemSize={getItemSize} // Dynamic row height function
+              onItemsRendered={onItemsRendered}
+              width="100%" // Width of the list
+              itemData={filteredProducts} // Pass filteredProducts as itemData
+            >
+              {Row}
+            </List>
+          )}
+        </InfiniteLoader>
       </div>
     </div>
   );

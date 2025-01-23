@@ -24,7 +24,7 @@ const SourceTable = ({ setStatistics }) => {
     const [totalCount, setTotalCount] = useState(0);
     const [platforms, setPlatform] = useState([]);
 
-    const pageSize = 20; // Adjust as needed
+    const pageSize = 30; // Adjust as needed
 
     
     useEffect(() => {
@@ -125,18 +125,16 @@ const SourceTable = ({ setStatistics }) => {
         }
 
         const source = sources[index];
-        const platform = platforms.find((p) => p.id === source.platform); // Find the platform by ID
 
         return (
             <SourceRow
                 key={source.id}
-                platform={platform}
                 product={source}
                 style={style}
                 onDelete={handleSourceDelete}
             />
         );
-    }, [isItemLoaded, sources, platforms, handleSourceDelete]);
+    }, [isItemLoaded, sources, handleSourceDelete]);
 
     return (
         <div className='bg-gray-800 bg-opacity-50 shadow-lg rounded-xl p-6'>
