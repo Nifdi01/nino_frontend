@@ -13,7 +13,7 @@ export const getKeywords = async (page=1, pageSize=20, searchTerm="") => {
     } catch (error){
         throw new Error(error);
     }
-}
+};
 
 export const getKeyword = async (id) => {
     try {
