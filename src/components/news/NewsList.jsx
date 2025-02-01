@@ -1,21 +1,18 @@
 import React, { useState, useMemo, useRef, useCallback, useEffect } from "react";
 import { FixedSizeList as List } from "react-window";
-import Select from "react-select";
 import { DateRange } from "react-date-range";
 import { Search, Calendar } from "lucide-react";
 import NewsCard from "./NewsCard";
-import { addDays, parseISO, isWithinInterval } from "date-fns";
-import customSelectStyles from "../utils/CustomSelectStyles";
-import CustomMultiValue from "../utils/CustomMultiValue";
+import { addDays } from "date-fns";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import "../../css/datepicker.css";
 import { getNews } from "../../services/news";
 import InfiniteLoader from "react-window-infinite-loader";
-import { toast } from "react-toastify";
 import { getSources } from "../../services/sources";
 import { getPlatforms } from "../../services/platforms";
 import { getKeywords } from "../../services/keywords";
+import CustomSelect from "../utils/CustomOption";
 
 const NewsList = () => {
   const [news, setNews] = useState([]);
@@ -268,35 +265,23 @@ const NewsList = () => {
             )}
           </div>
         )}
-        <Select
-          isMulti
-          options={sourceOptions}
-          value={selectedSources}
-          onChange={setSelectedSources}
-          className="w-full"
-          placeholder="Filter by Source"
-          styles={customSelectStyles}
-          components={{ MultiValue: CustomMultiValue }}
+        <CustomSelect 
+          optionName="Sources"
+          valueOptions={sourceOptions}
+          selectedOptions={selectedSources} 
+          setSelectedOptions={setSelectedSources}
         />
-        <Select
-          isMulti
-          options={platformOptions}
-          value={selectedPlatforms}
-          onChange={setSelectedPlatforms}
-          className="w-full"
-          placeholder="Filter by Platform"
-          styles={customSelectStyles}
-          components={{ MultiValue: CustomMultiValue }}
+        <CustomSelect 
+          optionName="Platforms"
+          valueOptions={platformOptions}
+          selectedOptions={selectedPlatforms} 
+          setSelectedOptions={setSelectedPlatforms}
         />
-        <Select
-          isMulti
-          options={keywordOptions}
-          value={selectedKeywords}
-          onChange={setSelectedKeywords}
-          className="w-full"
-          placeholder="Filter by Keywords"
-          styles={customSelectStyles}
-          components={{ MultiValue: CustomMultiValue }}
+        <CustomSelect 
+          optionName="Keywords"
+          valueOptions={keywordOptions}
+          selectedOptions={selectedKeywords} 
+          setSelectedOptions={setSelectedKeywords}
         />
       </div>
       <div className="overflow-x-auto" style={{ height: "600px", width: "100%" }}>
@@ -323,5 +308,6 @@ const NewsList = () => {
     </div>
   );
 };
+
 
 export default NewsList;

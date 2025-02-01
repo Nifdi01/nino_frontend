@@ -18,7 +18,7 @@ const NewsCard = ({ product, style }) => {
         <p className='text-gray-400 text-sm'>{formattedDate}</p>
 
         {/* Title */}
-        <h5 className="mb-1 text-xl sm:text-lg md:text-xl lg:text-2xl font-semibold tracking-tight text-gray-900 dark:text-white">
+        <h5 className="mb-1 sm:text-m md:text-lg lg:text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
           {product.title.split(" ").slice(0, 8).join(" ")}
           {product.title.split(" ").length > 8 ? " ..." : ""}
         </h5>
