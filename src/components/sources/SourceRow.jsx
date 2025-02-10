@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css'; // Don't forget to import the CS
 const SourceRow = ({ product, style, onDelete }) => {
     const handleDelete = async () => {
         try {
+            console.log(product);
             await deleteSource(product.id);  // Perform the delete operation
             onDelete(product.id);  // Pass only the 'id' to the parent
             toast.success(`${product.name} deleted successfully`);

@@ -3,7 +3,7 @@ import api from "./api";
 export const registerUser = async (credentials) => {
   console.log(credentials);
   try {
-    const response = await api.post('/register/', credentials); // API call to login endpoint
+    const response = await api.post('/auth/register', credentials); // API call to login endpoint
 
 
     return response.data; // Return the response data if successful
@@ -29,34 +29,53 @@ export const registerUser = async (credentials) => {
 
 export const loginUser = async (credentials) => {
   try {
-    const response = await api.post('/login/', credentials); // API call to login endpoint
+    console.log('Attempting login with:', credentials);
+    
+    const response = await api.post('/auth/login', credentials);
+    console.log('Login response:', response);
 
-    // Save tokens and user information to localStorage
-    localStorage.setItem('accessToken', response.data.access);
-    localStorage.setItem('refreshToken', response.data.refresh);
-    localStorage.setItem('userEmail', response.data.email);
-    localStorage.setItem('userFirstName', response.data.first_name);
-    localStorage.setItem('userLastName', response.data.last_name);
-    localStorage.setItem('userFullName', response.data.full_name);
-    localStorage.setItem('userCompany', response.data.company);
-    localStorage.setItem('userRole', response.data.role);
+    if (response.data.access) {
+      // Save tokens and user information to localStorage
+      localStorage.setItem('accessToken', response.data.access);
+      localStorage.setItem('refreshToken', response.data.refresh);
+      localStorage.setItem('userEmail', response.data.email);
+      localStorage.setItem('userFirstName', response.data.first_name);
+      localStorage.setItem('userLastName', response.data.last_name);
+      localStorage.setItem('userFullName', response.data.full_name);
+      localStorage.setItem('userCompany', response.data.company);
+      localStorage.setItem('userRole', response.data.role);
 
-    return response.data; // Return the response data if successful
+      console.log("Sending Authorization Header:", localStorage.getItem("accessToken"));
+
+      return response.data;
+    } else {
+      throw new Error('No access token received');
+    }
   } catch (error) {
-    // console.error('API Error:', error);
+    console.group('Login Error Details');
+    if (error.response) {
+      console.log('Status:', error.response.status);
+      console.log('Data:', error.response.data);
+      console.log('Headers:', error.response.headers);
+    } else if (error.request) {
+      console.log('No response received:', error.request);
+    } else {
+      console.log('Error:', error.message);
+    }
+    console.groupEnd();
 
-    const errorData = error.response?.data; // Adjusted for nested "errors"
-    let errorMessage = 'Login failed. Please try again.'; // Default error message
-
-    console.log(errorData);
-
-    if (errorData) {
-      // Extract field-specific errors and format them
+    let errorMessage = 'Login failed. Please try again.';
+    
+    if (error.response?.data) {
+      const errorData = error.response.data;
       errorMessage = Object.entries(errorData)
-        .map(([field, messages]) => `${messages.join(', ')}`)
+        .map(([field, messages]) => 
+          Array.isArray(messages) ? messages.join(', ') : messages.toString()
+        )
+        .join(' | ');
     }
 
-    throw new Error(errorMessage); // Throw the formatted error
+    throw new Error(errorMessage);
   }
 };
 

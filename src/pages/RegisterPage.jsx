@@ -4,11 +4,11 @@ import { registerUser } from '../services/auth'; // Login function from auth.js
 import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
-  const [first_name, setFirstName] = useState(''); 
-  const [last_name, setLastName] = useState(''); 
+  const [firstName, setFirstName] = useState(''); 
+  const [lastName, setLastName] = useState(''); 
   const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
-  const [company_name, setCompanyName] = useState('');
+  const [companyName, setCompanyName] = useState('');
 
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const RegisterPage = () => {
     setError(null); // Reset previous errors
     
     try {
-      await registerUser({ first_name, last_name, email, password, company_name });
+      await registerUser({ firstName, lastName, email, password, companyName });
       navigate('/'); // Redirect to the overview page after login
     } catch (err) {
       // Handle error responses
@@ -42,11 +42,11 @@ const RegisterPage = () => {
         <form onSubmit={handleRegister}>
         <div className='w-full mb-4 grid md:grid-cols-2 sm:grid-cols-1 gap-8'>
             <div className='w-full'>
-              <label htmlFor='first_name' className='block mb-2'>First Name</label>
+              <label htmlFor='firstName' className='block mb-2'>First Name</label>
               <input
                 type='text'
-                id='first_name'
-                value={first_name}
+                id='firstName'
+                value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 className='w-full p-2 bg-gray-700 rounded'
                 required
@@ -54,11 +54,11 @@ const RegisterPage = () => {
               />
             </div>
             <div className='w-full'>
-              <label htmlFor='last_name' className='block mb-2'>Last Name</label>
+              <label htmlFor='lastName' className='block mb-2'>Last Name</label>
               <input
                 type='text'
-                id='last_name'
-                value={last_name}
+                id='lastName'
+                value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 className='w-full p-2 bg-gray-700 rounded'
                 required
@@ -90,11 +90,11 @@ const RegisterPage = () => {
             />
           </div>
           <div className='mb-4'>
-            <label htmlFor='company_name' className='block mb-2'>Company</label>
+            <label htmlFor='companyName' className='block mb-2'>Company</label>
             <input
               type='text'
-              id='company_name'
-              value={company_name}
+              id='companyName'
+              value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               className='w-full p-2 bg-gray-700 rounded'
               required
