@@ -29,16 +29,16 @@ const KeywordsTable = ({setStatistics}) => {
         setIsLoading(true);
         try {
             const data  = await getKeywords(pageNumber, pageSize, currentSearchTerm);
-            setKeywords(prev => [...prev, ...data.results]);
-            setHasMore(!!data.next);
-            setTotalCount(data.count);
+            setKeywords(prev => [...prev, ...data.content]);
+            setHasMore(data.pageable.pageNumber + 1 < data.totalPages);
+            setTotalCount(data.totalElements);
         } catch (error) {
             console.error("Failed to fetch keywords: ", error);
             toast.error("Failed to load keywords");
         } finally {
             setIsLoading(false);
         }
-    }, []);
+    }, [pageSize]);
 
 
     const loadMoreItems = useCallback(() => {

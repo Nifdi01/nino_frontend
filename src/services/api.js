@@ -22,10 +22,10 @@ api.interceptors.request.use(
   (config) => {
     console.group('API Request');
     console.log('URL:', config.url);
-    console.log('Method:', config.method);
-    console.log('Headers:', config.headers.AxiosHeaders);
-    console.log('Data:', config.data);
-    console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
+    // console.log('Method:', config.method);
+    // console.log('Headers:', config.headers.AxiosHeaders);
+    // console.log('Data:', config.data);
+    // console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
     console.groupEnd();
 
     const isAuthFree = authFreeEndpoints.includes(config.url);
@@ -67,7 +67,7 @@ api.interceptors.response.use(
       // Error in request setup
       console.log('Request setup error:', error.message);
     }
-    console.log('Config:', error.config);
+    // console.log('Config:', error.config);
     console.groupEnd();
     return Promise.reject(error);
   }

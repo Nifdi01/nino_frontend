@@ -2,15 +2,20 @@ import api from './api';
 
 export const getKeywords = async (page=1, pageSize=20, searchTerm="") => {
     try {
+        const token = localStorage.getItem('accessToken');
         const response  = await api.get('keywords/', {
             params:{
                 page,
-                page_size: pageSize,
+                pageSize: pageSize,
                 search: searchTerm,
             },
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
         });
         return response.data;
     } catch (error){
+        console.error("API Error:", error.response ? error.response.data : error.message);
         throw new Error(error);
     }
 };
