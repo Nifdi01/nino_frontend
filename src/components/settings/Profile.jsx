@@ -7,6 +7,7 @@ const Profile = () => {
 	const email = localStorage.getItem("userEmail");
 	const company = localStorage.getItem("userCompany");
 	const role = localStorage.getItem("userRole");
+
 	return (
 		<SettingSection icon={User} title={"Profile"}>
 			<div className='flex flex-col sm:flex-row items-center mb-6'>

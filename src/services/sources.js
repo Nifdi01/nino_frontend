@@ -2,18 +2,23 @@ import api from './api';
 
 export const getSources = async (page=1, pageSize=20, searchTerm="") => {
     try {
-        const response = await api.get('/sources/', {
-            params: {
+        const token = localStorage.getItem('accessToken');
+        const response  = await api.get('sources/', {
+            params:{
                 page,
-                page_size: pageSize,
+                pageSize: pageSize,
                 search: searchTerm,
             },
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
         });
         return response.data;
-    } catch (error) {
+    } catch (error){
+        console.error("API Error:", error.response ? error.response.data : error.message);
         throw new Error(error);
     }
-}
+};
 
 export const getSource = async (id) => {
     try {

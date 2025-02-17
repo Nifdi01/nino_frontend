@@ -14,7 +14,6 @@ const api = axios.create({
 const authFreeEndpoints = [
   "/auth/login",
   "/auth/register",
-  "/auth/token/refresh"
 ];
 
 // Request interceptor with detailed logging
@@ -22,10 +21,10 @@ api.interceptors.request.use(
   (config) => {
     console.group('API Request');
     console.log('URL:', config.url);
-    // console.log('Method:', config.method);
-    // console.log('Headers:', config.headers.AxiosHeaders);
-    // console.log('Data:', config.data);
-    // console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
+    console.log('Method:', config.method);
+    console.log('Headers:', config.headers.AxiosHeaders);
+    console.log('Data:', config.data);
+    console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
     console.groupEnd();
 
     const isAuthFree = authFreeEndpoints.includes(config.url);

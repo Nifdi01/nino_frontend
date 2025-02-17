@@ -9,8 +9,8 @@ import { getKeywords } from "../../services/keywords";
 
 
 
-const KeywordsTable = ({setStatistics}) => {
-	const [keywords, setKeywords] = useState([]);
+const KeywordsTable = ({ setStatistics }) => {
+    const [keywords, setKeywords] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [page, setPage] = useState([]);
     const [hasMore, setHasMore] = useState(true);
@@ -20,15 +20,15 @@ const KeywordsTable = ({setStatistics}) => {
     const [totalCount, setTotalCount] = useState(0);
 
     const pageSize = 20;
-    
 
-	const openModal = () => setIsModalOpen(true);
-	const closeModal = () => setIsModalOpen(false);
+
+    const openModal = () => setIsModalOpen(true);
+    const closeModal = () => setIsModalOpen(false);
 
     const fetchKeywords = useCallback(async (pageNumber, currentSearchTerm) => {
         setIsLoading(true);
         try {
-            const data  = await getKeywords(pageNumber, pageSize, currentSearchTerm);
+            const data = await getKeywords(pageNumber, pageSize, currentSearchTerm);
             setKeywords(prev => [...prev, ...data.content]);
             setHasMore(data.pageable.pageNumber + 1 < data.totalPages);
             setTotalCount(data.totalElements);
@@ -42,8 +42,8 @@ const KeywordsTable = ({setStatistics}) => {
 
 
     const loadMoreItems = useCallback(() => {
-        if(!isLoading && hasMore) {
-            fetchKeywords(page+1, searchTerm);
+        if (!isLoading && hasMore) {
+            fetchKeywords(page + 1, searchTerm);
             setPage(prevPage => prevPage + 1);
         }
     }, [fetchKeywords, hasMore, isLoading, page, searchTerm]);
@@ -63,9 +63,9 @@ const KeywordsTable = ({setStatistics}) => {
     const handleSearch = (e) => {
         setSearchInput(e.target.value);
     }
-    
+
     const handleKeyDown = (e) => {
-        if(e.key === "Enter") {
+        if (e.key === "Enter") {
             setSearchTerm(searchInput.trim());
         }
     };
@@ -77,7 +77,7 @@ const KeywordsTable = ({setStatistics}) => {
             setKeywords(prevKeywords => prevKeywords.filter(keyword => keyword.id !== id));
             const updatedStatistics = await getKeywordStatistics();
             setStatistics(updatedStatistics);
-        } catch(error) {
+        } catch (error) {
             toast.error("Failed to delete keyword");
         }
     }, []);
@@ -101,14 +101,14 @@ const KeywordsTable = ({setStatistics}) => {
         }
         const keyword = keywords[index];
         return (
-            <KeywordRow 
-                key={keyword.id} 
-                product={keyword} 
-                style={style} 
-                onDelete={handleKeywordDelete} 
+            <KeywordRow
+                key={keyword.id}
+                product={keyword}
+                style={style}
+                onDelete={handleKeywordDelete}
             />
         );
-            
+
     }, [isItemLoaded, keywords, handleKeywordDelete]);
 
     return (
@@ -122,24 +122,25 @@ const KeywordsTable = ({setStatistics}) => {
                         onClick={openModal}>
                         Add Keyword
                     </button>
-    
+
                     {/* Add Source Modal */}
                     {isModalOpen && <AddKeywordModal onClose={closeModal} onCreate={handleKeywordCreate} />}
-    
+
                     <div className='relative w-full md:w-auto'>
                         <input
                             type='text'
-                            placeholder='Search keywords...'
+                            placeholder='Search sources...'
                             className='w-full bg-gray-700 text-white placeholder-gray-400 rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
                             onChange={handleSearch}
-                            value={searchTerm}
+                            value={searchInput}
+                            onKeyDown={handleKeyDown}
                         />
                         <Search className='absolute left-3 top-2.5 text-gray-400' size={18} />
                     </div>
                 </div>
             </div>
-    
-    
+
+
             {/* Scrollable Columns */}
             <div
                 className='overflow-x-auto overflow-y-auto'
@@ -176,8 +177,8 @@ const KeywordsTable = ({setStatistics}) => {
             </div>
         </div>
     );
-    
-    
+
+
 };
 
 export default KeywordsTable;

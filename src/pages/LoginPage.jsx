@@ -3,9 +3,8 @@ import { loginUser } from '../services/auth'; // Import the login function
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [companyName, setCompanyName] = useState('');
   const [error, setError] = useState(null); // Error state
   const navigate = useNavigate();
 
@@ -14,7 +13,7 @@ const LoginPage = () => {
     setError(null); // Reset any previous errors
 
     try {
-      await loginUser({ username, password, companyName }); // Login request
+      await loginUser({ email, password }); // Login request
       navigate('/'); // Redirect after successful login
     } catch (err) {
       // Handle error responses
@@ -37,12 +36,12 @@ const LoginPage = () => {
         {error && <p className='text-red-500 mb-4'>{error}</p>}
         <form onSubmit={handleLogin}>
           <div className='mb-4'>
-            <label htmlFor='username' className='block mb-2'>Email</label>
+            <label htmlFor='email' className='block mb-2'>Email</label>
             <input
-              type='username'
-              id='username'
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type='email'
+              id='email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className='w-full p-2 bg-gray-700 rounded'
               required
               autoFocus
@@ -55,17 +54,6 @@ const LoginPage = () => {
               id='password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className='w-full p-2 bg-gray-700 rounded'
-              required
-            />
-          </div>
-          <div className='mb-4'>
-            <label htmlFor='companyName' className='block mb-2'>Company</label>
-            <input
-              type='text'
-              id='companyName'
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
               className='w-full p-2 bg-gray-700 rounded'
               required
             />

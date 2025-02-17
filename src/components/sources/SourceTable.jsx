@@ -44,9 +44,9 @@ const SourceTable = ({ setStatistics }) => {
         setIsLoading(true);
         try {
             const data = await getSources(pageNumber, pageSize, currentSearchTerm);
-            setSources(prev => [...prev, ...data.results]);
-            setHasMore(!!data.next);
-            setTotalCount(data.count);
+            setSources(prev => [...prev, ...data.content]);
+            setHasMore(data.pageable.pageNumber + 1 < data.totalPages);
+            setTotalCount(data.totalElements);
         } catch (error) {
             console.error("Failed to fetch sources:", error);
             toast.error("Failed to load sources.");

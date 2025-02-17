@@ -34,14 +34,12 @@ export const loginUser = async (credentials) => {
     const response = await api.post('/auth/login', credentials);
     console.log('Login response:', response);
 
-    if (response.data.access) {
+    if (response.data.token) {
       // Save tokens and user information to localStorage
-      localStorage.setItem('accessToken', response.data.access);
-      localStorage.setItem('refreshToken', response.data.refresh);
+      localStorage.setItem('accessToken', response.data.token);
       localStorage.setItem('userEmail', response.data.email);
-      localStorage.setItem('userFirstName', response.data.first_name);
-      localStorage.setItem('userLastName', response.data.last_name);
-      localStorage.setItem('userFullName', response.data.full_name);
+      localStorage.setItem('userFirstName', response.data.firstName);
+      localStorage.setItem('userLastName', response.data.lastName);
       localStorage.setItem('userCompany', response.data.company);
       localStorage.setItem('userRole', response.data.role);
 
