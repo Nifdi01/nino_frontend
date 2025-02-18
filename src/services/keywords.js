@@ -51,7 +51,7 @@ export const updateKeyword = async (keyword) => {
 
 export const deleteKeyword = async (id) => {
     try {
-        const response = await api.delete(`keywords/${id}/`);
+        const response = await api.delete(`keywords/${id}`);
         return response.data;
     } catch (error){
         throw new Error(error);
