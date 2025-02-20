@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "http://172.26.184.46:8080/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,12 +19,12 @@ const authFreeEndpoints = [
 // Request interceptor with detailed logging
 api.interceptors.request.use(
   (config) => {
-    console.group('API Request');
-    console.log('URL:', config.url);
-    console.log('Method:', config.method);
-    console.log('Headers:', config.headers.AxiosHeaders);
-    console.log('Data:', config.data);
-    console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
+    // console.group('API Request');
+    // console.log('URL:', config.url);
+    // console.log('Method:', config.method);
+    // console.log('Headers:', config.headers.AxiosHeaders);
+    // console.log('Data:', config.data);
+    // console.log('Token in LocalStorage:', localStorage.getItem("accessToken"));
     console.groupEnd();
 
     const isAuthFree = authFreeEndpoints.includes(config.url);
@@ -46,9 +46,9 @@ api.interceptors.request.use(
 // Response interceptor with detailed error handling
 api.interceptors.response.use(
   (response) => {
-    console.group('API Response');
-    console.log('Status:', response.status);
-    console.log('Data:', response.data);
+    // console.group('API Response');
+    // console.log('Status:', response.status);
+    // console.log('Data:', response.data);
     console.groupEnd();
     return response;
   },
@@ -56,9 +56,9 @@ api.interceptors.response.use(
     console.group('API Error');
     if (error.response) {
       // Server responded with error
-      console.log('Status:', error.response.status);
-      console.log('Data:', error.response.data);
-      console.log('Headers:', error.response.headers);
+      // console.log('Status:', error.response.status);
+      // console.log('Data:', error.response.data);
+      // console.log('Headers:', error.response.headers);
     } else if (error.request) {
       // Request made but no response
       console.log('No response received:', error.request);

@@ -111,6 +111,8 @@ const KeywordsTable = ({ setStatistics }) => {
 
     }, [isItemLoaded, keywords, handleKeywordDelete]);
 
+    console.log(keywords);
+
     return (
         <div className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6'>
             <div className='flex flex-col md:flex-row justify-between items-center mb-4'>

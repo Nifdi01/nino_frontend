@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 const KeywordRow = ({ product, style, onDelete }) => {
     const handleOnDelete = async () => {
         try {
+            console.log("ID: ", product.id);
             await deleteKeyword(product.id);
             onDelete(product.id);
             toast.success(`${product.name} deleted successfully`);
