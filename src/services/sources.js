@@ -34,11 +34,9 @@ export const getSource = async (id) => {
 export const createSource = async (source) => {
     try {
         const response = await api.post('/sources/', source);
-        console.log('Source Created:', response.data);
         return response.data;
     } catch (error) {
-        console.error('Error creating source:', error);
-        throw new Error(error.response?.data?.message || 'Failed to create source');
+        throw new Error(error);
     }
 };
 
@@ -53,8 +51,7 @@ export const updateSource = async (source) => {
 
 export const deleteSource = async (id) => {
     try {
-        const response = await api.delete(`sources/${id}/`, id);
-        console.log(response.data);
+        const response = await api.delete(`sources/${id}`, id);
         return response.data;
     } catch (error){
         throw new Error(error);

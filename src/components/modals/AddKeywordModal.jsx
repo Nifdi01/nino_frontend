@@ -39,7 +39,6 @@ const AddKeywordModal = ({ onClose, onCreate }) => {
         try {
             console.log(formData);
             const newKeyword = await createKeyword(formData);
-            console.log("THE NEW KEYWORD: ", newKeyword); // Check if name is present
             onCreate(newKeyword);
             onClose();
         } catch(error){

@@ -31,7 +31,7 @@ const SourceTable = ({ setStatistics }) => {
         const fetchData = async () => {
             try {
                 const platformData = await getPlatforms();
-                setPlatform(platformData.results);
+                setPlatform(platformData);
             } catch (error) {
                 console.error(error);
             }
