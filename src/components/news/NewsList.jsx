@@ -83,8 +83,8 @@ const NewsList = () => {
 
         while (hasMore) {
           const data = await getSources(page, pageSize);
-          allSources = [...allSources, ...data.results];
-          hasMore = data.next !== null;
+          allSources = [...allSources, ...data.content];
+          hasMore = data.pageable.pageNumber + 1 < data.totalPages;
           page += 1;
         }
 
@@ -100,19 +100,8 @@ const NewsList = () => {
   useEffect(() => {
     const fetchAllPlatforms = async () => {
       try {
-        let page = 1;
-        const pageSize = 20;
-        let allPlatforms = [];
-        let hasMore = true;
-
-        while (hasMore) {
-          const data = await getPlatforms(page, pageSize);
-          allPlatforms = [...allPlatforms, ...data.results];
-          hasMore = data.next !== null;
-          page += 1;
-        }
-
-        setPlatforms(allPlatforms);
+        const data = await getPlatforms(page, pageSize);
+        setPlatforms(data);
       } catch (error) {
         console.error("Error fetching all platforms:", error);
       }
@@ -131,11 +120,10 @@ const NewsList = () => {
 
         while (hasMore) {
           const data = await getKeywords(page, pageSize);
-          allKeywords = [...allKeywords, ...data.results];
-          hasMore = data.next !== null;
+          allKeywords = [...allKeywords, ...data.content];
+          hasMore = (data.pageable.pageNumber + 1 < data.totalPages);
           page += 1;
         }
-
         setKeywords(allKeywords);
       } catch (error) {
         console.error("Error fetching all keywords:", error);
@@ -212,7 +200,7 @@ const NewsList = () => {
 
   const Row = useCallback(
     ({ index, style }) => {
-      if (!isItemLoaded(index)) {
+      if (!isItemLoaded(index) && hasMore) {
         return (
           <div style={style} className="flex items-center justify-center">
             Loading...
@@ -222,7 +210,7 @@ const NewsList = () => {
       const product = news[index];
       return <NewsCard key={product.id} product={product} style={style} />;
     },
-    [isItemLoaded, news]
+    [isItemLoaded, news, hasMore]
   );
 
   return (
