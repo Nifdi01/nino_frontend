@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import NinoLogo from '/src/assets/images/logo-nino.svg';
 
 const SIDEBAR_ITEMS = [
 	{ name: "Overview", icon: BarChart2, color: "#6366f1", href: "/" },
@@ -42,7 +43,7 @@ const Sidebar = memo(() => {
                     >
                       <Link to={'/'}>
                         <img 
-                          src="src/assets/images/logo-nino.svg" 
+                          src={NinoLogo}
                           alt="Nino Logo" 
                           className='ml-2 mb-2 w-16' 
                         />

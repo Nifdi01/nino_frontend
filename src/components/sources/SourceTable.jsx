@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
-import { Search } from "lucide-react";
+import { Search, FileSearch } from "lucide-react";
 import SourceRow from "./SourceRow";
 import AddSourceModal from "../modals/AddSourceModal";
 import { getSources } from "../../services/sources";
@@ -26,7 +26,7 @@ const SourceTable = ({ setStatistics }) => {
 
     const pageSize = 30; // Adjust as needed
 
-    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -87,7 +87,7 @@ const SourceTable = ({ setStatistics }) => {
     };
 
     const handleKeyDown = (e) => {
-        if(e.key === 'Enter'){
+        if (e.key === 'Enter') {
             setSearchTerm(searchInput.trim());
         }
     };
@@ -170,38 +170,47 @@ const SourceTable = ({ setStatistics }) => {
                 </div>
             </div>
 
-            <div
-                className='overflow-x-auto overflow-y-auto'
-                style={{ height: "500px", width: "100%" }}
-            >
-                <div className='min-w-[800px]'>
-                    <div className='grid grid-cols-5 px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wide border-b border-gray-700'>
-                        <div>Name</div>
-                        <div>Platform</div>
-                        <div>Link</div>
-                        <div>Active</div>
-                        <div>Actions</div>
-                    </div>
-                    <InfiniteLoader
-                        isItemLoaded={isItemLoaded}
-                        itemCount={hasMore ? sources.length + 1 : sources.length}
-                        loadMoreItems={loadMoreItems}
-                    >
-                        {({ onItemsRendered, ref }) => (
-                            <List
-                                height={400}
-                                itemCount={hasMore ? sources.length + 1 : sources.length}
-                                itemSize={50}
-                                width="100%"
-                                onItemsRendered={onItemsRendered}
-                                ref={ref}
-                                itemData={sources} // Pass sources directly
-                            >
-                                {Row}
-                            </List>
-                        )}
-                    </InfiniteLoader>
-                </div>
+            <div className='overflow-x-auto overflow-y-auto' style={{ height: "500px", width: "100%" }}>
+                {
+                    sources.length == 0 && !isLoading ? (
+                        <div className="flex flex-col items-center justify-center mx-auto my-20">
+                            <FileSearch className="text-gray-400 w-auto h-20" />
+                            <p className="text-gray-400">No sources found.</p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className='min-w-[800px]'>
+                                <div className='grid grid-cols-5 px-4 py-2 text-left text-xs font-medium text-gray-400 uppercase tracking-wide border-b border-gray-700'>
+                                    <div>Name</div>
+                                    <div>Platform</div>
+                                    <div>Link</div>
+                                    <div>Active</div>
+                                    <div>Actions</div>
+                                </div>
+                                <InfiniteLoader
+                                    isItemLoaded={isItemLoaded}
+                                    itemCount={hasMore ? sources.length + 1 : sources.length}
+                                    loadMoreItems={loadMoreItems}
+                                >
+                                    {({ onItemsRendered, ref }) => (
+                                        <List
+                                            height={400}
+                                            itemCount={hasMore ? sources.length + 1 : sources.length}
+                                            itemSize={50}
+                                            width="100%"
+                                            onItemsRendered={onItemsRendered}
+                                            ref={ref}
+                                            itemData={sources} // Pass sources directly
+                                        >
+                                            {Row}
+                                        </List>
+                                    )}
+                                </InfiniteLoader>
+                            </div>
+                        </>
+                    )
+                }
+
             </div>
         </div>
     );
