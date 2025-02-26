@@ -2,14 +2,20 @@ import api from './api';
 
 export const getNews = async (page = 1, pageSize = 50, searchTerm = "", filters = {}) => {
   try {
-    const response = await api.get("news/", {
-      params: {
-        page,
-        page_size: pageSize,
-        search: searchTerm,
-        ...filters, // Spread filters directly
+    const payload = {
+      page,
+      pageSize: pageSize,
+      search: searchTerm,
+      filters: {
+        sources: filters.sources || [],
+        platforms: filters.platforms || [],
+        keywords: filters.keywords || [],
+        start_date: filters.start_date || "",
+        end_date: filters.end_date || "",
       },
-    });
+    };
+
+    const response = await api.post("/news/", payload);
     return response.data;
   } catch (error) {
     console.error("API Error:", error.response || error);

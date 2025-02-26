@@ -32,7 +32,7 @@ const NewsList = () => {
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [dateRange, setDateRange] = useState([
     {
-      startDate: addDays(new Date(), -30),
+      startDate: addDays(new Date(), -1),
       endDate: new Date(),
       key: "selection",
     },
@@ -44,34 +44,32 @@ const NewsList = () => {
 
   const fetchNews = useCallback(
     async (pageNumber) => {
+      setIsLoading(true);
       try {
-        const sources = selectedSources.map((source) => source.value).join(",");
-        const platforms = selectedPlatforms.map((platform) => platform.value).join(",");
-        const keywords = selectedKeywords.map((keyword) => keyword.value).join(",");
-
-        const startDate = dateRange[0].startDate.toISOString();
-        const endDate = dateRange[0].endDate.toISOString();
-
-        const filters = {
-          sources: sources,
-          keywords: keywords,
-          platforms: platforms,
-          start_date: startDate,
-          end_date: endDate,
+        const payload = {
+          sources: selectedSources.map((source) => source.value),
+          platforms: selectedPlatforms.map((platform) => platform.value),
+          keywords: selectedKeywords.map((keyword) => keyword.value),
+          start_date: dateRange[0].startDate.toISOString(),
+          end_date: dateRange[0].endDate.toISOString(),
         };
-
-        const data = await getNews(pageNumber, pageSize, searchTerm, filters);
+  
+        const data = await getNews(pageNumber, pageSize, searchTerm, payload);
         setNews((prev) => (pageNumber === 1 ? data.results : [...prev, ...data.results]));
         setHasMore(!!data.next);
         setTotalCount(data.count);
       } catch (error) {
-        console.error("Failed to fetch news: ", error);
+        console.error("Failed to fetch news:", error);
       } finally {
         setIsLoading(false);
       }
     },
     [searchTerm, selectedSources, selectedPlatforms, selectedKeywords, dateRange]
   );
+
+  useEffect(() => {
+    fetchNews(1); // Kick off with page 1 and last 24 hours
+  }, [fetchNews]);
 
   useEffect(() => {
     const fetchAllSources = async () => {
