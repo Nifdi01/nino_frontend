@@ -3,7 +3,7 @@ import React from 'react';
 import { formatInTimeZone } from 'date-fns-tz';
 
 const NewsCard = ({ product, style }) => {
-  const date = new Date(product.published_at);
+  const date = new Date(product.publishedAt);
   const formattedDate = formatInTimeZone(date, "UTC", 'yyyy-MM-dd HH:mm');
   return (
     <div style={style} className="px-2">
@@ -11,7 +11,7 @@ const NewsCard = ({ product, style }) => {
         href={product.link}
         className="block p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 transition-colors duration-200"
         aria-label={`Read more about ${product.title}`}
-        target="_blank" // Opens the link in a new tab
+        target="_blank"
         rel="noopener noreferrer" // Security best practice
       >
         {/* Date */}

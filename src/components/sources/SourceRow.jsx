@@ -9,7 +9,7 @@ const SourceRow = ({ product, style, onDelete }) => {
         try {
             console.log(product);
             await deleteSource(product.id);  // Perform the delete operation
-            onDelete(product.id);  // Pass only the 'id' to the parent
+            onDelete(product.id);
             toast.success(`${product.name} deleted successfully`);
         } catch (error) {
             console.error(error);
