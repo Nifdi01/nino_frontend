@@ -32,10 +32,10 @@ const SourcesPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <StatCard name='Sources' icon={Rss} value={statistics?.total} color='#8B5CF6' />
-                    <StatCard name='Least Active' icon={TrendingDown} value={statistics?.least_active?.name || 'None'} color='#6366F1' />
-                    <StatCard name='Most Active' icon={TrendingUp} value={statistics?.most_active?.name || 'None'} color='#EF4444' />
-                    <StatCard name='Top Platform' icon={Search} value={statistics?.top_platform?.name || 'None'} color='#EF4444' />
+                    <StatCard name='Sources' icon={Rss} value={statistics?.sourceCount} color='#8B5CF6' />
+                    <StatCard name='Least Active' icon={TrendingDown} value={statistics?.leastFrequentSourceName || 'None'} color='#6366F1' />
+                    <StatCard name='Most Active' icon={TrendingUp} value={statistics?.mostFrequentSourceName || 'None'} color='#EF4444' />
+                    <StatCard name='Top Platform' icon={Search} value={statistics?.mostFrequentPlatform || 'None'} color='#EF4444' />
                 </motion.div>
 
                 {/* Table of Sources */}

@@ -33,9 +33,9 @@ const KeywordsPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
                 >
-					<StatCard name='Keywords' icon={WholeWord} value={statistics?.total || 'None'} color='#8B5CF6' />
-                    <StatCard name='Least Active' icon={TrendingDown} value={statistics?.least_frequent?.name  || 'None'} color='#6366F1' />
-					<StatCard name='Most Active' icon={TrendingUp} value={statistics?.most_frequent?.name  || 'None'} color='#EF4444' />
+					<StatCard name='Keywords' icon={WholeWord} value={statistics?.keywordCount || 'None'} color='#8B5CF6' />
+                    <StatCard name='Least Active' icon={TrendingDown} value={statistics?.leastFrequentKeywordName  || 'None'} color='#6366F1' />
+					<StatCard name='Most Active' icon={TrendingUp} value={statistics?.mostFrequentKeywordName  || 'None'} color='#EF4444' />
                 </motion.div>
 
                 {/* Table of Sources */}

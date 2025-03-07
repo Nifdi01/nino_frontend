@@ -37,7 +37,7 @@ const OverviewPage = () => {
                 >
                     <StatCard name='News' icon={Newspaper} value={statistics?.newsCount} color='#6366F1' />
                     <StatCard name='Sources' icon={Rss} value={statistics?.sourceCount} color='#8B5CF6' />
-                    <StatCard name='Top Source' icon={Globe} value={statistics?.mostFrequentSource || 'None'} color='#EF4444' />
+                    <StatCard name='Top Source' icon={Globe} value={statistics?.mostFrequentSourceName || 'None'} color='#EF4444' />
                     <StatCard name='Top Keyword' icon={Search} value={statistics?.mostFrequentKeywordName || 'None'} color='#EF4444' />
                 </motion.div>
 
