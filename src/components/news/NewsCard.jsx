@@ -1,10 +1,11 @@
 // NewsCard.js
 import React from 'react';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns-tz';
 
 const NewsCard = ({ product, style }) => {
   const date = new Date(product.publishedAt);
-  const formattedDate = formatInTimeZone(date, "UTC", 'yyyy-MM-dd HH:mm');
+
+  const formattedDate = format(date, 'yyyy-MM-dd HH:mm', { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
   return (
     <div style={style} className="px-2">
       <a

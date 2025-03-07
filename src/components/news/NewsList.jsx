@@ -67,9 +67,11 @@ const NewsList = () => {
     [searchTerm, selectedSources, selectedPlatforms, selectedKeywords, dateRange]
   );
 
+
   useEffect(() => {
-    fetchNews(1); // Kick off with page 1 and last 24 hours
+    fetchNews(1);
   }, [fetchNews]);
+
 
   useEffect(() => {
     const fetchAllSources = async () => {

@@ -2,7 +2,7 @@ import api from './api';
 
 export const getOverviewStatistics = async () => {
     try {
-        const response = await api.get('/statistics');
+        const response = await api.get('/statistics/overview');
         return response.data;
     } catch (error) {
         throw new Error(error);

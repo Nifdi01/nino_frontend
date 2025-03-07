@@ -10,8 +10,8 @@ export const getNews = async (page = 1, pageSize = 50, searchTerm = "", filters 
         sources: filters.sources || [],
         platforms: filters.platforms || [],
         keywords: filters.keywords || [],
-        start_date: filters.start_date || "",
-        end_date: filters.end_date || "",
+        startDate: filters.start_date || "",
+        endDate: filters.end_date || "",
       },
     };
 

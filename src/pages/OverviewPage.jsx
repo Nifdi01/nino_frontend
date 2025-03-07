@@ -16,7 +16,6 @@ const OverviewPage = () => {
             try {
                 const statisticsData = await getOverviewStatistics();  // Rename variable to avoid shadowing state variable
                 setStatistics(statisticsData);  // Update state with the fetched data
-                // console.log(statisticsData);  // Log the fetched statistics
             } catch (error) {
                 console.log(error);
             }
@@ -36,10 +35,10 @@ const OverviewPage = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
-                    <StatCard name='News' icon={Newspaper} value={statistics?.news?.total} color='#6366F1' />
-                    <StatCard name='Sources' icon={Rss} value={statistics?.sources?.total} color='#8B5CF6' />
-                    <StatCard name='Top Source' icon={Globe} value={statistics?.sources?.top?.name || 'None'} color='#EF4444' />
-                    <StatCard name='Top Keyword' icon={Search} value={statistics?.keywords?.top?.name || 'None'} color='#EF4444' />
+                    <StatCard name='News' icon={Newspaper} value={statistics?.newsCount} color='#6366F1' />
+                    <StatCard name='Sources' icon={Rss} value={statistics?.sourceCount} color='#8B5CF6' />
+                    <StatCard name='Top Source' icon={Globe} value={statistics?.mostFrequentSource || 'None'} color='#EF4444' />
+                    <StatCard name='Top Keyword' icon={Search} value={statistics?.mostFrequentKeywordName || 'None'} color='#EF4444' />
                 </motion.div>
 
                 {/* CHARTS */}
