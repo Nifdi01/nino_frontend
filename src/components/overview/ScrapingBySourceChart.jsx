@@ -1,19 +1,27 @@
 import { motion } from "framer-motion";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from "recharts";
 import { memo } from 'react';
+import { useState, useEffect } from "react";
+import { getTopSources } from "../../services/dashboard";
 
 const COLORS = ["#6366F1", "#8B5CF6", "#EC4899", "#10B981", "#F59E0B"];
 
-const SCRAPE_SOURCE_DATA = [
-	{ name: "Oxu az", value: 45600 },
-	{ name: "Apa az", value: 38200 },
-	{ name: "Baku WS", value: 29800 },
-	{ name: "Musavat TV", value: 18700 },
-	{ name: "Tech az", value: 13700 },
-
-];
-
 const ScrapingBySourceChart = memo(() => {
+	const [sources, setSources] = useState([]);
+	const [error, setError] = useState(false);
+	useEffect(() => {
+        const fetchSources = async () => {
+            try {
+                const data = await getTopSources();
+                setSources(data);
+            } catch (err) {
+                setError(err.message);
+            }
+        };
+
+        fetchSources();
+    }, []);
+
 	return (
 		<motion.div
 			className='bg-gray-800 bg-opacity-50  shadow-lg rounded-xl p-6 border border-gray-700'
@@ -25,7 +33,7 @@ const ScrapingBySourceChart = memo(() => {
 
 			<div className='h-80'>
 				<ResponsiveContainer>
-					<BarChart data={SCRAPE_SOURCE_DATA}>
+					<BarChart data={sources}>
 						<CartesianGrid strokeDasharray='3 3' stroke='#4B5563' />
 						<XAxis dataKey='name' stroke='#9CA3AF' />
 						<YAxis stroke='#9CA3AF' />
@@ -38,7 +46,7 @@ const ScrapingBySourceChart = memo(() => {
 						/>
 						<Legend />
 						<Bar dataKey={"value"} fill='#8884d8'>
-							{SCRAPE_SOURCE_DATA.map((entry, index) => (
+							{sources.map((entry, index) => (
 								<Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
 							))}
 						</Bar>
